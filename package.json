@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@skeletonlabs/skeleton": "^1.10.0",
 		"@tauri-apps/api": "^1.4.0"
 	}
 }

@@ -4,21 +4,22 @@
 	let name = '';
 	let greetMsg = '';
 
-	async function greet() {
-		greetMsg = await invoke('greet', { name });
+	async function getKeys() {
+		greetMsg = await invoke('get_keys');
 	}
+	console.log(getKeys());
 </script>
 
-<div>
-	<input id="greet-input" placeholder="Enter a name..." bind:value={name} />
-	<button on:click={greet}>Greet</button>
-	<p>{greetMsg}</p>
-</div>
+<!-- <div> -->
+<!-- 	<input id="greet-input" placeholder="Enter a name..." bind:value={name} /> -->
+<!-- 	<button on:click={greet}>Greet</button> -->
+<!-- 	<p>{greetMsg}</p> -->
+<!-- </div> -->
 
 <style lang="postcss">
 	button {
 		@apply font-bold py-2 px-6 rounded;
-		@apply bg-blue-500 text-white;
+		@apply bg-green-500 text-white;
 	}
 
 	button:hover {
