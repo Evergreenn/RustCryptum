@@ -40,15 +40,19 @@ pub fn init_connection() -> Result<Connection> {
 }
 
 pub fn init_database_schemas() -> Result<Connection> {
-    let co = init_connection().unwrap();
-    init_databases(&co)?;
+    let co = get_connection().unwrap();
+    init_databases(&co).unwrap();
     Ok(co)
+}
+
+pub fn get_connection() -> Result<Connection> {
+    init_connection()
 }
 
 fn init_databases(co: &Connection) -> Result<()> {
     println!("Initializing database schemas...");
     co.execute(
-        "CREATE TABLE keys (
+        "CREATE TABLE IF NOT EXISTS keys (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
             password TEXT NOT NULL,

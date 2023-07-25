@@ -1,7 +1,7 @@
 use chrono::prelude::*;
 use passwords::PasswordGenerator;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use serde::{Serialize, Deserialize};
 
 use crate::config::PasswordOptions;
 
@@ -11,13 +11,13 @@ pub struct Key {
     id: Uuid,
     name: String,
     password: String,
-        // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
+    // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
     created_at: DateTime<Utc>,
-        // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
+    // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
     updated_at: DateTime<Utc>,
-        // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
+    // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
     last_used_at: DateTime<Utc>,
-        // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
+    // #[serde_as(as = "serde_with::DurationSeconds<i64>")]
     last_changed_at: DateTime<Utc>,
 }
 
@@ -124,7 +124,8 @@ impl Key {
     }
 
     pub fn update_in_database(&self) -> Result<(), Box<dyn std::error::Error>> {
-        let conn = rusqlite::Connection::open("keys.db")?;
+        // let conn = rusqlite::Connection::open("keys.db")?;
+        let conn = crate::repository::get_connection()?;
         conn.execute(
             "UPDATE keys SET name = ?2, password = ?3, updated_at = ?4, last_used_at = ?5, last_changed_at = ?6 WHERE id = ?1",
             rusqlite::params![
@@ -140,7 +141,8 @@ impl Key {
     }
 
     pub fn persist(&self) -> Result<(), Box<dyn std::error::Error>> {
-        let conn = rusqlite::Connection::open("keys.db")?;
+        // let conn = rusqlite::Connection::open("keys.db")?;
+        let conn = crate::repository::get_connection()?;
         conn.execute(
             "INSERT INTO keys (id, name, password, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5)",
             rusqlite::params![
@@ -155,7 +157,8 @@ impl Key {
     }
 
     pub fn retrive_keys_from_db() -> Result<Vec<Self>, Box<dyn std::error::Error>> {
-        let conn = rusqlite::Connection::open("keys.db")?;
+        // let conn = rusqlite::Connection::open("keys.db")?;
+        let conn = crate::repository::get_connection()?;
         let mut stmt = conn.prepare("SELECT id, name, password, created_at, updated_at, last_used_at, last_changed_at FROM keys" ).unwrap();
         let rows = stmt.query_map(rusqlite::params![], |row| {
             Ok(Key::from_db(
