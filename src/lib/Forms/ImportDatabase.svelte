@@ -11,6 +11,8 @@
 	let selected: string;
 	let password: string;
 
+	export let toggleInit;
+
 	$: if (files) {
 		console.log(SidebarLeft);
 		// message = files[0].name;
@@ -30,6 +32,7 @@
 	const onCompleteHandler = () => {
 		// console.log('complete');
 		invoke('upload_kdbx_database', { path: selected, password });
+		toggleInit();
 	};
 
 	const onDropzaonClickHandle = async (event: Event) => {

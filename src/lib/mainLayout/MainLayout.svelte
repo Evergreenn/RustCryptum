@@ -17,14 +17,23 @@
 	}
 
 	let keys: Array<Keys> = [];
+	// let tmp;
 
-	invoke('get_keys').then((res) => {
-		keys = [...res];
-	});
+	// $: console.log(tmp);
+
+	invoke('get_keys')
+		.then((res) => {
+			// tmp = [...res];
+			console.log('oui');
+			console.log(res);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 
 	listen('key_created', (event) => {
 		invoke('get_keys').then((res) => {
-			keys = [...res];
+			// keys = [...res];
 		});
 	});
 </script>

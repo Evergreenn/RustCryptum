@@ -1,23 +1,28 @@
 <script lang="ts">
-	import { invoke } from '@tauri-apps/api/tauri';
+	// import { invoke } from '@tauri-apps/api/tauri';
 	import { page } from '$app/stores';
 	import Addkey from '$lib/sidebar/Addkey.svelte';
 
-	interface Keys {
-		id: string;
-		name: string;
-		password: string;
-		created_at: string;
-		updated_at: string;
-		last_used_at: string;
-		last_changed_at: string;
-	}
+	// interface Keys {
+	// 	id: string;
+	// 	name: string;
+	// 	password: string;
+	// 	created_at: string;
+	// 	updated_at: string;
+	// 	last_used_at: string;
+	// 	last_changed_at: string;
+	// }
 
-	let keys: Array<Keys> = [];
+	// let keys: Array<Keys> = [];
 
-	invoke('get_keys').then((res) => {
-		keys = [...res];
-	});
+	// invoke('get_keys')
+	// 	.then((res) => {
+	// 		console.log(res);
+	// 		// keys = [...res];
+	// 	})
+	// 	.catch((err) => {
+	// 		console.log(err);
+	// 	});
 
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 </script>
