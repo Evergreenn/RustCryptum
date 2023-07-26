@@ -4,18 +4,32 @@
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import SidebarLeft from '$lib/sidebar/SidebarLeft.svelte';
 	import MainLayout from '$lib/mainLayout/MainLayout.svelte';
+	import { Toast, toastStore } from '@skeletonlabs/skeleton';
 	import { Modal } from '@skeletonlabs/skeleton';
 	// import { invoke } from '@tauri-apps/api/tauri';
 	import ImportDatabase from '$lib/Forms/ImportDatabase.svelte';
+	import { invoke } from '@tauri-apps/api/tauri';
+	import { AppRail, AppRailTile, AppRailAnchor } from '@skeletonlabs/skeleton';
 	// your script goes here
 	let init: boolean = false;
+	let currentTile: number = 0;
+	let databasePromise: Promise<any>;
+
+	const getDatabase = async () => {
+		const res = await invoke('get_keys');
+		console.log(res);
+		return res;
+	};
 
 	const toggleInit = () => {
 		init = !init;
 	};
+
+	databasePromise = getDatabase();
 </script>
 
 <Modal />
+<Toast />
 
 <AppShell>
 	<svelte:fragment slot="header">
@@ -46,13 +60,19 @@
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
 		{#if init === true}
-			<SidebarLeft />
+			<SidebarLeft bind:currentTile />
 		{/if}
 	</svelte:fragment>
-
 	{#if init === true}
-		<slot />
-		<MainLayout />
+		{#await databasePromise then database}
+			<!-- {@debug database} -->
+			<!-- <div class="grid place-content-center place-items-center"> -->
+			{#if currentTile === 0}
+				<MainLayout entries={database.entries} />
+			{:else if currentTile === 1}
+				coucou
+			{:else if currentTile === 2}{:else}{/if}
+		{/await}
 	{:else}
 		<!-- <slot /> -->
 		<div class="flex items-center justify-center h-screen p-4">

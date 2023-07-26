@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { FileDropzone } from '@skeletonlabs/skeleton';
+	import { FileDropzone, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { open } from '@tauri-apps/api/dialog';
-	import SidebarLeft from '$lib/sidebar/SidebarLeft.svelte';
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
+	import { toastStore } from '@skeletonlabs/skeleton';
 
 	let files: FileList;
 	let message: string = 'Upload or drop your .kdbx file here';
@@ -13,26 +13,21 @@
 
 	export let toggleInit;
 
-	$: if (files) {
-		console.log(SidebarLeft);
-		// message = files[0].name;
-		// subMessage = files[0].type;
-	}
-
-	// const onChangeHandler = (event: Event) => {
-	// 	// const target = event.target as HTMLInputElement;
-	// 	// files = event.target.files[0];
-	// 	console.log(event);
-	// };
-
-	// const onHandleFileUpload = async () => {
-	// 	console.log(selected);
-	// };
-
 	const onCompleteHandler = () => {
-		// console.log('complete');
-		invoke('upload_kdbx_database', { path: selected, password });
-		toggleInit();
+		invoke('upload_kdbx_database', { path: selected, password })
+			.then((res) => {
+				toggleInit();
+				console.log(res);
+			})
+			.catch((err) => {
+				const t: ToastSettings = {
+					message: err,
+					// Provide any utility or variant background style:
+					background: 'variant-filled-error'
+				};
+				toastStore.trigger(t);
+				console.log(err);
+			});
 	};
 
 	const onDropzaonClickHandle = async (event: Event) => {

@@ -111,10 +111,19 @@ impl Group {
         // for group in ref_group.groups() {
         //     groups.push(Group::new(group));
         // }
+        println!("in groups");
+        println!("{:?}", ref_group);
         Self {
             uuid: ref_group.uuid(),
             name: ref_group.name().to_string(),
-            entries: ref_group.entries().map(|e| Entry::new(e.clone())).collect(),
+            entries: ref_group
+                .entries()
+                .map(|e| {
+                    println!("entries: {:?}", e);
+                    Entry::new(e.clone())
+                })
+                .collect(),
+
             groups: ref_group.groups().map(|g| Group::new(g.clone())).collect(),
             times: Times {
                 last_modification_time: ref_group.times().last_modification_time,
@@ -141,14 +150,25 @@ pub struct Meta {
 pub struct Database {
     meta: Meta,
     groups: Vec<Group>,
+    entries: Vec<Entry>,
 }
 
 impl Database {
     pub fn new(ref_database: KdbxDatabase) -> Self {
+        // println!("{:?}", ref_database);
         let mut groups = vec![];
         for group in ref_database.root().groups() {
+            //TODO: fix this
+            // for child_group in group.groups() {
+            //     groups.push(Group::new(child_group.clone()));
+            // }
             groups.push(Group::new(group.clone()));
         }
+        let mut entries = vec![];
+        for entry in ref_database.root().entries() {
+            entries.push(Entry::new(entry.clone()));
+        }
+
         Self {
             meta: Meta {
                 database_name: ref_database.name().to_string(),
@@ -156,6 +176,7 @@ impl Database {
                 database_description: ref_database.description().to_string(),
             },
             groups,
+            entries,
         }
 
         // Self {

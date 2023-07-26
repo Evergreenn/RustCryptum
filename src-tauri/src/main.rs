@@ -89,9 +89,9 @@ fn get_keys(state: State<InternalState>) -> kdbx_keys::Database {
     //     })
     //     .collect()
 
-    println!("called");
+    // println!("called");
     let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
-    println!("db: {:#?}", db);
+    // println!("db: {:#?}", db);
     db
 }
 
@@ -120,11 +120,7 @@ fn upload_kdbx_database(
 
     let kdbx = kdbx_rs::open(&database_path.to_string()).unwrap();
     let key = CompositeKey::from_password(&password);
-    let mut unlocked = kdbx
-        .unlock(&key)
-        .map_err(|_| println!("Error opening the database"))
-        .unwrap();
-    // .unwrap();
+    let mut unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string())?;
     let mut database_unlocked = state.database.lock().unwrap();
 
     //TODO: add a mutable reference to the database to the state. I am really not sure that cloning
