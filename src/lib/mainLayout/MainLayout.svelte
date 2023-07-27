@@ -52,14 +52,14 @@
 
 <div class="flex flex-row gap-4">
 	<!-- <div class="grid grid-cols-2 gap-4"> -->
-	<AppRail class="basis-1/4 h-screen " aspectRatio="1:1">
+	<AppRail class="basis-1/6 h-screen" aspectRatio="1:1">
 		{#each entries as key, i}
 			{#each key.fields as field}
 				{#if field.key === 'Title'}
 					<AppRailTile
 						class="m-4"
 						bind:group={currentTile}
-						name={i}
+						name={i.toString()}
 						value={i + 1}
 						title={field.value}
 					>

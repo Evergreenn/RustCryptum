@@ -11,7 +11,7 @@
 	let selected: string;
 	let password: string;
 
-	export let toggleInit;
+	export let toggleInit = () => {};
 
 	const onCompleteHandler = () => {
 		invoke('upload_kdbx_database', { path: selected, password })
@@ -43,9 +43,7 @@
 				}
 			]
 		});
-		if (Array.isArray(selected)) {
-			// user selected multiple files
-		} else if (selected === null) {
+		if (selected === null) {
 			// user cancelled the selection
 		} else {
 			// console.log(selected);

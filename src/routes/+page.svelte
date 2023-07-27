@@ -4,12 +4,12 @@
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import SidebarLeft from '$lib/sidebar/SidebarLeft.svelte';
 	import MainLayout from '$lib/mainLayout/MainLayout.svelte';
-	import { Toast, toastStore } from '@skeletonlabs/skeleton';
+	import { Toast } from '@skeletonlabs/skeleton';
 	import { Modal } from '@skeletonlabs/skeleton';
 	// import { invoke } from '@tauri-apps/api/tauri';
 	import ImportDatabase from '$lib/Forms/ImportDatabase.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { AppRail, AppRailTile, AppRailAnchor } from '@skeletonlabs/skeleton';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	// your script goes here
 	let init: boolean = false;
 	let currentTile: number = 0;
@@ -17,7 +17,7 @@
 
 	const getDatabase = async () => {
 		const res = await invoke('get_keys');
-		console.log(res);
+		console.log('database: ', res);
 		return res;
 	};
 
@@ -60,18 +60,42 @@
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
 		{#if init === true}
-			<SidebarLeft bind:currentTile />
+			{#await databasePromise}
+				<div class="flex flex-col items-center justify-center h-screen">
+					<ProgressRadial
+						...
+						stroke={20}
+						meter="stroke-primary-500"
+						track="stroke-primary-500/30"
+						value={undefined}
+					/>
+				</div>
+			{:then database}
+				<!-- {@debug database} -->
+				<!-- <div class="grid place-content-center place-items-center"> -->
+				<SidebarLeft bind:currentTile groups={database.groups} />
+			{/await}
 		{/if}
 	</svelte:fragment>
 	{#if init === true}
-		{#await databasePromise then database}
+		{#await databasePromise}
+			<div class="flex flex-col items-center justify-center h-screen">
+				<ProgressRadial
+					...
+					stroke={20}
+					meter="stroke-primary-500"
+					track="stroke-primary-500/30"
+					value={undefined}
+				/>
+			</div>
+		{:then database}
 			<!-- {@debug database} -->
 			<!-- <div class="grid place-content-center place-items-center"> -->
 			{#if currentTile === 0}
 				<MainLayout entries={database.entries} />
-			{:else if currentTile === 1}
-				coucou
-			{:else if currentTile === 2}{:else}{/if}
+			{:else}
+				<MainLayout entries={database.groups[currentTile - 1].entries} />
+			{/if}
 		{/await}
 	{:else}
 		<!-- <slot /> -->
