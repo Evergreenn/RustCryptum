@@ -1,13 +1,11 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use kdbx_rs::{self, binary::Unlocked, CompositeKey, Database as KdbxDatabase, Error};
+use kdbx_rs::{self, CompositeKey};
 use models::kdbx_keys;
-use serde::{Deserialize, Serialize, Serializer};
 use std::sync::Mutex;
 
-use crate::models::kdbx_keys::*;
 use crate::models::key::*;
-use tauri::{App, Manager, State, Window};
+use tauri::{Manager, State, Window};
 
 pub mod config;
 pub mod models;
@@ -91,7 +89,7 @@ fn get_keys(state: State<InternalState>) -> kdbx_keys::Database {
 
     // println!("called");
     let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
-    // println!("db: {:#?}", db);
+    println!("db_groups: {:#?}", db.groups);
     db
 }
 
@@ -121,6 +119,7 @@ fn upload_kdbx_database(
     let kdbx = kdbx_rs::open(&database_path.to_string()).unwrap();
     let key = CompositeKey::from_password(&password);
     let mut unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string())?;
+    // println!("Database unlocked: {:#?}", unlocked.database());
     let mut database_unlocked = state.database.lock().unwrap();
 
     //TODO: add a mutable reference to the database to the state. I am really not sure that cloning

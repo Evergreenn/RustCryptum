@@ -1,45 +1,70 @@
+<svelte:options accessors={true} />
+
 <script lang="ts">
 	// import { invoke } from '@tauri-apps/api/tauri';
 	import { page } from '$app/stores';
-	import Addkey from '$lib/sidebar/Addkey.svelte';
+	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
+	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
 
-	import { AppRail, AppRailTile, AppRailAnchor } from '@skeletonlabs/skeleton';
 	export let currentTile: number = 0;
 	export let groups: [] = [];
+	export let databaseName: string = '';
+
 	$: console.log('groups: ', groups);
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
+
+	const toggleTile = (e, uuid: number) => {
+		console.log(e.detail.open);
+		if (e.detail.open) {
+			currentTile = uuid;
+		} else {
+			currentTile = 0;
+		}
+	};
+
+	const buildGroupTree = (groups: any) => {
+		let tree: any = [];
+		if (groups.length > 0) {
+			groups.forEach((group: any) => {
+				tree.push({
+					uuid: group.uuid,
+					name: group.name,
+					groups: buildGroupTree(group.groups)
+				});
+			});
+		}
+		return tree;
+	};
+
+	const tree = buildGroupTree(groups);
+	$: console.log('tree: ', tree);
 </script>
 
-<div class="bg-surface-50-900-token left-0 h-screen w-96">
-	<div class="flex flex-col">
-		<div class="flex gap-4 p-6 hover:bg-surface-300-600-token w-full cursor-pointer">
+<div class="bg-surface-50-900-token h-screen basis-1/5">
+	<div class=" flex flex-row items-center justify-between mb-4">
+		<div class="flex items-center justify-between w-1/4 ml-3 mt-4">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
 				viewBox="0 0 24 24"
-				fill="currentColor"
-				class="w-6 h-6"
+				stroke-width="1.5"
+				stroke="currentColor"
+				class="w-20 h-20"
 			>
 				<path
-					d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
 				/>
 			</svg>
-			<!-- </svelte:fragment> -->
-			<span>Root</span>
 		</div>
-		{#each groups as group}
-			<div class="flex gap-4 p-6 hover:bg-surface-300-600-token w-full cursor-pointer">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="currentColor"
-					viewBox="0 0 24 24"
-					class="w-6 h-6"
-				>
-					<path
-						d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-					/>
-				</svg>
-				<span>{group.name}</span>
-			</div>
-		{/each}
+		<div class="flex flex-col justify-center w-3/4 items-center">
+			<h1 class="text-3xl">Rustylock</h1>
+		</div>
 	</div>
+	<hr class="!border-t-4 ml-6 mr-6 mb-4" />
+
+	<TreeView>
+		<NodeTreeViewChild children={tree} handleTileClick={toggleTile} />
+	</TreeView>
 </div>
