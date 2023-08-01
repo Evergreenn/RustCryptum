@@ -10,11 +10,12 @@
 	import { writable } from 'svelte/store';
 
 	let init: boolean = false;
+	const initState = writable();
 	const toggleInit = () => {
 		init = !init;
 		// databasePromise = getDatabase();
 	};
-	const initState = writable();
+
 	$: initState.set(init);
 
 	let files: FileList;

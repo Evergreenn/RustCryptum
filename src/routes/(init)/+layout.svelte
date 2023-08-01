@@ -22,8 +22,7 @@
 
 	// const toggleInit = () => {
 	// init = !init;
-
-	databasePromise = getDatabase();
+	$: init = databasePromise = getDatabase();
 	// };
 
 	$: console.log('currentTile: ', currentTile);
