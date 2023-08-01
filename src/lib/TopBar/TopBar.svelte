@@ -3,13 +3,13 @@
 	import { Avatar } from '@skeletonlabs/skeleton';
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col z-10">
 	<div class="flex flex-row">
 		<div class="w-1/5">
 			<!-- breadcrumb -->
 			<div class="p-2">Main</div>
 			<!-- creation button -->
-			<div class="p-2 flex flex-row gap-4">
+			<div class="p-2 flex flex-row sm:max-lg:flex-col gap-4">
 				<button type="button" class="btn variant-filled-primary">
 					<span>
 						<svg
@@ -69,7 +69,7 @@
 						/>
 					</svg>
 				</div>
-				<input type="search" placeholder="Search..." />
+				<input class="variant-glass-surface" type="search" placeholder="Search..." />
 				<!-- <button class="variant-filled-secondary">Submit</button> -->
 			</div>
 			<!-- <input class="input p-3" title="Input (text)" type="text" placeholder="Search" /> -->
@@ -89,5 +89,5 @@
 			</div>
 		</div>
 	</div>
-	<hr class="!border-t-4 ml-2 mr-2 mb-4 mt-3" />
+	<hr class="!border-t-4 ml-2 mr-8 mb-4 mt-3" />
 </div>

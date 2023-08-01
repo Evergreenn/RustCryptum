@@ -58,7 +58,7 @@
 				groups={database.groups}
 				databaseName={database.meta.database_name}
 			/>
-			<div class="flex flex-col h-36 basis-4/5 top-0 pl-2">
+			<div class="flex flex-col h-36 basis-4/5 top-0 pl-2 overflow-auto h-screen">
 				<TopBar />
 				<MainLayout {database} {currentTile} />
 			</div>

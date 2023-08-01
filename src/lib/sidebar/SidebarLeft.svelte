@@ -15,11 +15,12 @@
 
 	const toggleTile = (e, uuid: number) => {
 		console.log(e.detail.open);
-		if (e.detail.open) {
+		// if (e.detail.open) {
 			currentTile = uuid;
-		} else {
-			currentTile = 0;
-		}
+		// }
+    // else {
+			// currentTile = 0;
+		// }
 	};
 
 	const buildGroupTree = (groups: any) => {
@@ -40,7 +41,7 @@
 	$: console.log('tree: ', tree);
 </script>
 
-<div class="bg-surface-50-900-token h-screen basis-1/5">
+<div class="bg-suface-100-800-token variant-glass-surface h-screen basis-1/5">
 	<div class=" flex flex-row items-center justify-between mb-4">
 		<div class="flex items-center justify-between w-1/4 ml-3 mt-4">
 			<svg

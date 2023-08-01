@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="card">
+<div class="card variant-glass-surface">
 	<header class="card-header">
 		<div class="flex flex-col">
 			<div class="">
@@ -56,11 +56,15 @@
 			</div>
 		</div>
 	</header>
-	<hr class="!border-t-4 ml-4 mr-4 mb-4 mt-2" />
+	<hr class="!border-t-4 m-4" />
 	<section class="p-4">
 		<slot name="body">
 			<p class="text-sm text-gray-500">Body</p>
 		</slot>
 	</section>
-	<!-- <footer class="card-footer">(footer)</footer> -->
+	<footer class="card-footer mt-4">
+		<slot name="footer">
+			<p class="text-sm text-gray-500">Footer</p>
+		</slot>
+	</footer>
 </div>
