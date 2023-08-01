@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { AppBar } from '@skeletonlabs/skeleton';
-	import { AppShell } from '@skeletonlabs/skeleton';
-	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import SidebarLeft from '$lib/sidebar/SidebarLeft.svelte';
 	import MainLayout from '$lib/mainLayout/MainLayout.svelte';
 	import { Toast } from '@skeletonlabs/skeleton';
@@ -11,6 +8,7 @@
 	import ImportDatabase from '$lib/Forms/ImportDatabase.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { writable } from 'svelte/store';
 	// your script goes here
 	let init: boolean = false;
 	let currentTile: number = 1;
@@ -22,10 +20,11 @@
 		return res;
 	};
 
-	const toggleInit = () => {
-		init = !init;
-		databasePromise = getDatabase();
-	};
+	// const toggleInit = () => {
+	// init = !init;
+
+	databasePromise = getDatabase();
+	// };
 
 	$: console.log('currentTile: ', currentTile);
 
@@ -60,7 +59,7 @@
 			/>
 			<div class="flex flex-col h-36 basis-4/5 top-0 pl-2 overflow-auto h-screen">
 				<TopBar />
-				<MainLayout {database} {currentTile} />
+				<slot />
 			</div>
 		</div>
 		<!-- {#if currentTile === 0} -->
