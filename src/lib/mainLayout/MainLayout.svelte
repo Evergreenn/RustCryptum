@@ -35,6 +35,12 @@
 	// }
 	export let database = {};
 	export let currentTile = 0;
+
+	$: {
+		console.log(database);
+		console.log(currentTile);
+	}
+
 	let currentGroup: any = [];
 
 	const onHandleCopyClick = async (uuid, value) => {
@@ -140,7 +146,7 @@
 				<span slot="footer">
 					<div class="flex flex-row justify-end sm:max-lg:flex-col gap-4">
 						<!-- <button type="button" class="btn variant-filled-primary">Copy Password</button> -->
-						<a href={"card/"+field.uuid} class="btn variant-filled-primary" >More</a>
+						<a href={'card/' + field.uuid} class="btn variant-filled-primary">More</a>
 					</div>
 				</span>
 			</Card>

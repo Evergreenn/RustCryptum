@@ -6,17 +6,22 @@
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import { toastStore } from '@skeletonlabs/skeleton';
 	import Card from '$lib/Ui/Card.svelte';
+	import { goto } from '$app/navigation';
 
-	import { writable } from 'svelte/store';
+	import { useStateStore } from '$lib/stores/stateStore';
 
-	let init: boolean = false;
-	const initState = writable();
+	const state = useStateStore();
 	const toggleInit = () => {
-		init = !init;
-		// databasePromise = getDatabase();
+		// state.set();
+		$state.initialized = true;
 	};
 
-	$: initState.set(init);
+	$: {
+		if ($state.initialized === true) {
+			console.log($state.initialized);
+			goto('/home');
+		}
+	}
 
 	let files: FileList;
 	let message: string = 'Upload or drop your .kdbx file here';

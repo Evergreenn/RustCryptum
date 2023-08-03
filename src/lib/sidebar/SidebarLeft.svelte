@@ -1,25 +1,26 @@
-<svelte:options accessors={true} />
+<!-- <svelte:options accessors={true} /> -->
 
 <script lang="ts">
 	// import { invoke } from '@tauri-apps/api/tauri';
 	import { page } from '$app/stores';
 	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
+	import { setContext } from 'svelte';
 
 	export let currentTile: number = 0;
 	export let groups: [] = [];
 	export let databaseName: string = '';
 
-	$: console.log('groups: ', groups);
+	// $: console.log('groups: ', groups);
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 
 	const toggleTile = (e, uuid: number) => {
-		console.log(e.detail.open);
 		// if (e.detail.open) {
-			currentTile = uuid;
+		currentTile = uuid;
+		setContext('currentTile', uuid);
 		// }
-    // else {
-			// currentTile = 0;
+		// else {
+		// currentTile = 0;
 		// }
 	};
 
