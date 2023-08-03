@@ -17,7 +17,6 @@
 	const toggleTile = (e, uuid: number) => {
 		// if (e.detail.open) {
 		currentTile = uuid;
-		setContext('currentTile', uuid);
 		// }
 		// else {
 		// currentTile = 0;
