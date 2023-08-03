@@ -1,11 +1,40 @@
 <script lang="ts">
 	import { TreeViewItem } from '@skeletonlabs/skeleton';
+	import { useStateStore } from '$lib/stores/stateStore';
+
 	export let children: any = [];
 	export let handleTileClick: (e: any, uuid: number) => void;
+	let statestore = useStateStore();
+	let current: string = '';
+
+	const setBreadcrumb = (title: string) => {
+		$statestore.breadcrumb = title;
+	};
+
+	const open = (_id: number) => {
+		// 	if (id === 0) {
+		// 		return true;
+		// 	}
+		return false;
+	};
+
+	const onToggle = (e: any, uuid: string) => {
+		if (e.detail.open) {
+			current = uuid;
+		} else {
+			current = '';
+		}
+	};
 </script>
 
-{#each children as child}
-	<TreeViewItem on:toggle={(e) => handleTileClick(e, child.uuid)}>
+{#each children as child, i}
+	<TreeViewItem
+		regionSummary={current === child.uuid ? 'font-bold' : ''}
+		open={open(i)}
+		on:toggle={(e) => {
+			handleTileClick(e, child.uuid), onToggle(e, child.uuid), setBreadcrumb(child.name);
+		}}
+	>
 		<svelte:fragment slot="lead">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -30,3 +59,6 @@
 		</svelte:fragment>
 	</TreeViewItem>
 {/each}
+
+<style>
+</style>

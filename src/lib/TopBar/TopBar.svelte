@@ -1,16 +1,38 @@
 <script>
-	import { LightSwitch } from '@skeletonlabs/skeleton';
+	import { LightSwitch, modalStore } from '@skeletonlabs/skeleton';
 	import { Avatar } from '@skeletonlabs/skeleton';
+	import Breadcrumb from '$lib/Ui/breadcrumb.svelte';
+	import AddNewKey from '$lib/Forms/AddNewKey.svelte';
+
+	const modalComponent = {
+		// Pass a reference to your custom component
+		ref: AddNewKey,
+		// Add the component properties as key/value pairs
+		props: { background: 'bg-red-500' },
+		// Provide a template literal for the default component slot
+		slot: '<p>Skeleton</p>'
+	};
+
+	const onEntrieCreationHandler = () => {
+		const modal = {
+			type: 'component',
+			// Pass the component directly:
+			component: modalComponent
+		};
+		modalStore.trigger(modal);
+	};
 </script>
 
 <div class="flex flex-col z-10">
 	<div class="flex flex-row">
 		<div class="w-1/5">
 			<!-- breadcrumb -->
-			<div class="p-2">Main</div>
+			<div class="p-2">
+				<Breadcrumb />
+			</div>
 			<!-- creation button -->
 			<div class="p-2 flex flex-row sm:max-lg:flex-col gap-4">
-				<button type="button" class="btn variant-filled-primary">
+				<button type="button" class="btn variant-filled-primary" on:click={onEntrieCreationHandler}>
 					<span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

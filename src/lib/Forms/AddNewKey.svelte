@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { modalStore } from '@skeletonlabs/skeleton';
-	import { setContext } from 'svelte';
 	let keyName = '';
 
 	const onClick = async () => {
@@ -16,7 +15,7 @@
 	<form class="relative pb-16">
 		<label class="label mb-6">
 			<span>Key name</span>
-			<input bind:value={keyName} class="input p-2" type="text" placeholder="random Key Name" />
+			<input bind:value={keyName} class="input" type="text" placeholder="Random Key Name" />
 		</label>
 		<label class="label">
 			<button

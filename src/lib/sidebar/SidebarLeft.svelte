@@ -16,6 +16,7 @@
 
 	const toggleTile = (e, uuid: number) => {
 		// if (e.detail.open) {
+		console.log('event: ', e);
 		currentTile = uuid;
 		// }
 		// else {

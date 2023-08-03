@@ -1,23 +1,20 @@
 <script lang="ts">
 	import MainLayout from '$lib/mainLayout/MainLayout.svelte';
+	import { useStateStore } from '$lib/stores/stateStore';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { getContext } from 'svelte';
-	let data;
-	let tile;
-	let currentTile = getContext('currentTile');
-	const database = getContext('database');
-	// console.log('database after context: ', database);
-	// const currentTile = getContext('currentTile');
-	$: data = database;
+
+	let statestore = useStateStore();
+	let database: any = [];
+	let currentTile: number = 0;
+
 	$: {
-		console.log('currentTile: in child ', currentTile);
-		// currentTile = getContext('currentTile');
-		tile = getContext('currentTile');
+		currentTile = $statestore.currentTile;
+		database = getContext('database');
 	}
 </script>
 
-<!-- {#if database && currentTile} -->
-{#await data}
+{#await database}
 	<div class="flex flex-col items-center justify-center h-screen">
 		<ProgressRadial
 			...
@@ -27,7 +24,6 @@
 			value={undefined}
 		/>
 	</div>
-{:then data}
-	<MainLayout database={data} currentTile={tile} />
+{:then database}
+	<MainLayout {database} {currentTile} />
 {/await}
-<!-- {/if} -->

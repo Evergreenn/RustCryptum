@@ -8,40 +8,27 @@
 	import { useStateStore } from '$lib/stores/stateStore';
 	import { goto } from '$app/navigation';
 	import { setContext } from 'svelte';
-	import ImportDatabase from '$lib/Forms/ImportDatabase.svelte';
 	const state = useStateStore();
 	const { initialized } = $state;
 	let currentTile: number = 1;
 	let databasePromise: Promise<any>;
 
+	let t = useStateStore();
+
 	const getDatabase = async () => {
 		const res = invoke('get_keys');
-		// res.then(
-		// 	(res) => {
-		// 		setContext('database', res);
-		// 		console.log(res);
-		// 	},
-		// 	(err) => {
-		// 		console.log(err);
-		// 	}
-		// );
-		// console.log('database: ', res);
 		return res;
 	};
+
+	databasePromise = getDatabase();
 
 	$: {
 		if (initialized !== true) {
 			goto('/');
 		}
+		setContext('currentTile', ($t.currentTile = currentTile));
+		setContext('database', databasePromise);
 	}
-
-	databasePromise = getDatabase();
-
-	$: {
-		console.log('currentTile: ', currentTile);
-		setContext('currentTile', currentTile);
-	}
-	$: setContext('database', databasePromise);
 </script>
 
 <Modal />
@@ -60,8 +47,6 @@
 		</div>
 	{:then database}
 		<div class="flex flex-row w-full">
-			<!-- {@debug database} -->
-			<!-- <div class="grid place-content-center place-items-center"> -->
 			<SidebarLeft
 				bind:currentTile
 				groups={database.groups}
