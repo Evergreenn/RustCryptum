@@ -11,6 +11,7 @@
 		props: { background: 'bg-red-500' },
 		// Provide a template literal for the default component slot
 		slot: '<p>Skeleton</p>'
+		// width: 'w-80'
 	};
 
 	const onEntrieCreationHandler = () => {

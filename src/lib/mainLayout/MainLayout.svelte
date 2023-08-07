@@ -36,16 +36,10 @@
 	export let database = {};
 	export let currentTile = 0;
 
-	$: {
-		console.log(database);
-		console.log(currentTile);
-	}
-
 	let currentGroup: any = [];
 
 	const onHandleCopyClick = async (uuid, value) => {
 		const item = findRecursivlyInArrayEntries(database.groups, uuid);
-		console.log(item);
 		if (item.length === 0) {
 			return;
 		}
@@ -102,7 +96,6 @@
 
 	$: {
 		currentGroup = findRecursivlyInArray(database.groups, currentTile);
-		console.log(currentGroup);
 	}
 </script>
 
