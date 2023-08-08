@@ -133,6 +133,13 @@
 					<!-- ... -->
 				</Stepper>
 			</span>
-		</Card>
+			<span slot="footer">
+				<div class="flex flex-row items-center justify-center">
+					<p>
+						<a href="/create" class={'anchor'}>Create a new Database</a>
+					</p>
+				</div>
+			</span></Card
+		>
 	{/if}
 </div>

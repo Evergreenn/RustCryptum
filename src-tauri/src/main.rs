@@ -1,6 +1,6 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use kdbx_rs::database::{Entry, Group};
+use kdbx_rs::database::{Database, Entry, Group};
 use kdbx_rs::{self, CompositeKey, Kdbx};
 use models::kdbx_keys;
 use passwords::PasswordGenerator;
@@ -62,7 +62,8 @@ fn main() {
             create_new_key,
             create_new_folder,
             upload_kdbx_database,
-            generate_password
+            generate_password,
+            create_database
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -171,6 +172,58 @@ fn generate_password(window: Window, options: config::PasswordOptions) -> String
         .strict(true);
     let password = pg.generate_one().unwrap();
     password
+}
+
+#[tauri::command(async)]
+fn create_database(
+    window: Window,
+    state: State<InternalState>,
+    path: String,
+    password: String,
+    name: String,
+    description: String,
+) -> Result<(), String> {
+    let mut database_path = state.database_path.lock().unwrap();
+    *database_path = path;
+
+    let mut database_password = state.database_password.lock().unwrap();
+    *database_password = password;
+
+    let mut database = state.database.lock().unwrap();
+    let mut new_database = Database::default();
+    new_database.set_name(&name);
+    new_database.set_description(&description);
+    let mut kdbx = Kdbx::from_database(new_database.clone());
+    *database = new_database;
+    // new_database.set_root(Group::default());
+
+    // kdbx.root_mut().set_name("Root");
+    kdbx.set_key(CompositeKey::from_password(&database_password.clone()))
+        .unwrap();
+
+    let full_path = format!("{}/{}.{}", &database_path, &name, "kdbx");
+    println!("full_path: {}", full_path);
+
+    let file = File::create(&full_path);
+    match file {
+        Ok(mut file) => {
+            kdbx.write(&mut file).unwrap();
+        }
+        Err(e) => panic!("Error creating file: {}", e),
+    };
+
+    let kdbx = kdbx_rs::open(&full_path).unwrap();
+    let key = CompositeKey::from_password(&database_password);
+    let unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string());
+    match unlocked {
+        Ok(mut e) => {
+            *database = e.database_mut().clone();
+            Ok(())
+        }
+        Err(e) => {
+            return Err(e);
+        }
+    }
 }
 
 #[tauri::command(async)]
