@@ -8,6 +8,8 @@
 	import { useStateStore } from '$lib/stores/stateStore';
 	import { goto } from '$app/navigation';
 	import { setContext } from 'svelte';
+	import { emit, listen } from '@tauri-apps/api/event';
+
 	const state = useStateStore();
 	const { initialized } = $state;
 	let currentTile: number = 1;
@@ -29,6 +31,10 @@
 		setContext('currentTile', ($t.currentTile = currentTile));
 		setContext('database', databasePromise);
 	}
+
+	const event = listen('refresh_ui', (event) => {
+		databasePromise = getDatabase();
+	});
 </script>
 
 <Modal />

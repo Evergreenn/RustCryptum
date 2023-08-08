@@ -15,9 +15,11 @@
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 
 	const toggleTile = (e, uuid: number) => {
+		e.preventDefault();
 		// if (e.detail.open) {
 		console.log('event: ', e);
 		currentTile = uuid;
+		return;
 		// }
 		// else {
 		// currentTile = 0;
@@ -39,10 +41,9 @@
 	};
 
 	const tree = buildGroupTree(groups);
-	$: console.log('tree: ', tree);
 </script>
 
-<div class="bg-suface-100-800-token variant-glass-surface h-screen basis-1/5">
+<div class="bg-suface-200-700-token h-screen basis-1/5">
 	<div class=" flex flex-row items-center justify-between mb-4">
 		<div class="flex items-center justify-between w-1/4 ml-3 mt-4">
 			<svg

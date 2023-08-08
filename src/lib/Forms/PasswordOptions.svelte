@@ -33,7 +33,15 @@
 </script>
 
 <div class="w-full h-60 flex flex-col pt-4">
-	<RangeSlider name="range-slider" bind:value={length} min={6} max={max_length} step={1} ticked>
+	<RangeSlider
+		name="range-slider"
+		bind:value={length}
+		min={6}
+		max={max_length}
+		step={1}
+		ticked
+		accent={'accent-primary-500 dark:accent-primary-500'}
+	>
 		<div class="flex justify-between items-center">
 			<div class="font-bold">Password length</div>
 			<div class="text-xs">{length} / {max_length}</div>

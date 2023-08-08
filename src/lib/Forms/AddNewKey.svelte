@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, modalStore } from '@skeletonlabs/skeleton';
 	import PasswordOptions from './PasswordOptions.svelte';
 	import { useStateStore } from '$lib/stores/stateStore';
 	let keyName: string = '';
@@ -17,17 +17,23 @@
 
 	const stateStore = useStateStore();
 
-	const onClick = async () => {
-		const res = await invoke('create_new_key', {
+	let isLoading: boolean = false;
+
+	const onClick = () => {
+		isLoading = true;
+
+		invoke('create_new_key', {
 			name: keyName,
 			password,
 			currentGroup: $stateStore.breadcrumb,
 			username: userName,
 			url
+		}).then((res) => {
+			// if (res === true) {
+			isLoading = false;
+			modalStore.close();
+			// }
 		});
-		console.log(res);
-
-		modalStore.close();
 	};
 
 	const onHandlePasswordGeneration = async () => {
@@ -76,8 +82,14 @@
 				<button
 					on:click={onClick}
 					type="submit"
-					class="btn variant-ghost-primary absolute bottom-0 l weft-0 right-0">Generate</button
+					class="btn variant-ghost-primary absolute bottom-0 l weft-0 right-0"
 				>
+					{#if isLoading}
+						<ProgressRadial width={'w-4'} stroke={40} value={undefined} />
+					{:else}
+						Generate
+					{/if}
+				</button>
 			</label>
 		</div>
 		<PasswordOptions

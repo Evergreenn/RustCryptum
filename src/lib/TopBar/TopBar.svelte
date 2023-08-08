@@ -3,15 +3,17 @@
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import Breadcrumb from '$lib/Ui/breadcrumb.svelte';
 	import AddNewKey from '$lib/Forms/AddNewKey.svelte';
+	import AddNewFolder from '$lib/Forms/AddNewFolder.svelte';
 
 	const modalComponent = {
-		// Pass a reference to your custom component
-		ref: AddNewKey,
-		// Add the component properties as key/value pairs
-		props: { background: 'bg-red-500' },
-		// Provide a template literal for the default component slot
-		slot: '<p>Skeleton</p>'
-		// width: 'w-80'
+		ref: AddNewKey
+		// props: { background: 'bg-red-500' },
+		// slot: '<p>Skeleton</p>'
+	};
+	const modalFolderComponent = {
+		ref: AddNewFolder
+		// props: { background: 'bg-red-500' },
+		// slot: '<p>Skeleton</p>'
 	};
 
 	const onEntrieCreationHandler = () => {
@@ -19,6 +21,19 @@
 			type: 'component',
 			// Pass the component directly:
 			component: modalComponent
+		};
+		modalStore.trigger(modal);
+	};
+
+	const onAvatarClickHandler = () => {
+		console.log('avatar clicked');
+	};
+
+	const onFolderCreationHandler = () => {
+		const modal = {
+			type: 'component',
+			// Pass the component directly:
+			component: modalFolderComponent
 		};
 		modalStore.trigger(modal);
 	};
@@ -49,7 +64,7 @@
 					<span>Add</span>
 				</button>
 
-				<button type="button" class="btn variant-filled-primary">
+				<button type="button" class="btn variant-filled-primary" on:click={onFolderCreationHandler}>
 					<span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -104,6 +119,7 @@
 			</div>
 			<div class="">
 				<Avatar
+					on:click={onAvatarClickHandler}
 					class=""
 					src="https://images.unsplash.com/photo-1617296538902-887900d9b592?ixid=M3w0Njc5ODF8MHwxfGFsbHx8fHx8fHx8fDE2ODc5NzExMDB8&ixlib=rb-4.0.3&w=128&h=128&auto=format&fit=crop"
 					width="w-14"

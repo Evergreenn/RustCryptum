@@ -218,7 +218,7 @@ fn process_children_groups(group: &kdbx_rs::database::Group) -> Group {
 }
 
 impl Database {
-    pub fn new(ref_database: &mut KdbxDatabase) -> Self {
+    pub fn new(ref_database: KdbxDatabase) -> Self {
         // println!("{:?}", ref_database);
         let mut groups = vec![];
         // for group in ref_database.root().groups() {

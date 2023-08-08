@@ -1,12 +1,13 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use kdbx_rs::{self, CompositeKey};
-use kdbx_rs::database::Entry;
+use kdbx_rs::database::{Entry, Group};
+use kdbx_rs::{self, CompositeKey, Kdbx};
 use models::kdbx_keys;
 use passwords::PasswordGenerator;
+use std::fs::File;
 use std::sync::{Arc, Mutex};
 
-use crate::models::key::*;
+// use crate::models::key::*;
 use tauri::{Manager, State, Window};
 
 pub mod config;
@@ -17,15 +18,15 @@ mod repository;
 struct InternalState {
     database_path: Mutex<String>,
     database_password: Mutex<String>,
-    // database: Arc<Mutex<&'a mut kdbx_rs::database::Database>>,
+    database: Arc<Mutex<kdbx_rs::database::Database>>,
 }
 
-impl Default for InternalState{
+impl Default for InternalState {
     fn default() -> Self {
         Self {
             database_path: Mutex::new("".to_string()),
             database_password: Mutex::new("".to_string()),
-            // database: Arc::new(Mutex::new(& mut kdbx_rs::database::Database::default())),
+            database: Arc::new(Mutex::new(kdbx_rs::database::Database::default())),
         }
     }
 }
@@ -57,9 +58,9 @@ fn main() {
         })
         .manage(InternalState::default())
         .invoke_handler(tauri::generate_handler![
-            greet,
             get_keys,
             create_new_key,
+            create_new_folder,
             upload_kdbx_database,
             generate_password
         ])
@@ -68,71 +69,96 @@ fn main() {
 }
 
 #[tauri::command]
-fn greet(name: String) -> String {
-    format!("Hello, {}!", name)
-}
-
-#[tauri::command]
 fn get_keys(state: State<InternalState>) -> kdbx_keys::Database {
-    // let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
-    let database_path = state.database_path.lock().unwrap(); 
-    let database_password = state.database_password.lock().unwrap();
-
-    let kdbx = kdbx_rs::open(&database_path.to_string()).unwrap();
-    let key = CompositeKey::from_password(&database_password);
-    let mut unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string()).unwrap();
-
-    let db = kdbx_keys::Database::new(unlocked.database_mut());
+    let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
     println!("db_groups: {:#?}", db.groups);
     db
 }
 
-#[tauri::command]
-fn create_new_key(state: State<InternalState>,name: String, password: String, currentGroup: String, username: String, url: String) -> () {
+#[tauri::command(async)]
+fn create_new_folder(
+    window: Window,
+    state: State<InternalState>,
+    name: String,
+    current_group: String,
+) -> () {
+    let mut database = state.database.lock().unwrap();
 
-    // let mut database = state.database.lock().unwrap();
-    // let mut group = database.find_group_mut(|g|g.name() == &currentGroup).unwrap();
-    //
-    
-    println!("name: {}", name);
-    println!("password: {}", password);
-    println!("currentGroup: {}", currentGroup);
-    println!("username: {}", username);
-    println!("url: {}", url);
-
-
-    let database_path = state.database_path.lock().unwrap(); 
+    let database_path = state.database_path.lock().unwrap();
     let database_password = state.database_password.lock().unwrap();
 
-    let kdbx = kdbx_rs::open(&database_path.to_string()).unwrap();
-    let key = CompositeKey::from_password(&database_password);
-    let mut unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string()).unwrap();
-    let mut database = unlocked.database_mut();
+    let group = database.find_group_mut(|g| g.name() == &current_group);
 
-    let mut group = database.find_group_mut(|g|g.name() == &currentGroup).unwrap();
-    println!("group: {:#?}", group);
+    let group = if group.is_none() {
+        database.root_mut()
+    } else {
+        group.unwrap()
+    };
+
+    let mut new_group = Group::default();
+    new_group.set_name(&name);
+    group.add_group(new_group);
+
+    let mut kdbx = Kdbx::from_database(database.clone());
+    kdbx.set_key(CompositeKey::from_password(&database_password.clone()))
+        .unwrap();
+    let file = File::create(database_path.clone());
+    match file {
+        Ok(mut file) => {
+            kdbx.write(&mut file).unwrap();
+        }
+        Err(e) => panic!("Error creating file: {}", e),
+    };
+
+    window.emit("refresh_ui", {}).unwrap();
+}
+
+#[tauri::command(async)]
+fn create_new_key(
+    window: Window,
+    state: State<InternalState>,
+    name: String,
+    password: String,
+    current_group: String,
+    username: String,
+    url: String,
+) -> () {
+    let mut database = state.database.lock().unwrap();
+
+    let database_path = state.database_path.lock().unwrap();
+    let database_password = state.database_password.lock().unwrap();
+
+    let group = database.find_group_mut(|g| g.name() == &current_group);
+
+    let group = if group.is_none() {
+        database.root_mut()
+    } else {
+        group.unwrap()
+    };
+
     let mut entry = Entry::default();
     entry.set_title(&name);
     entry.set_username(&username);
     entry.set_password(&password);
     entry.set_url(&url);
 
-    println!("entry: {:#?}", entry);
     group.add_entry(entry);
 
+    let mut kdbx = Kdbx::from_database(database.clone());
+    kdbx.set_key(CompositeKey::from_password(&database_password.clone()))
+        .unwrap();
+    let file = File::create(database_path.clone());
+    match file {
+        Ok(mut file) => {
+            kdbx.write(&mut file).unwrap();
+        }
+        Err(e) => panic!("Error creating file: {}", e),
+    };
 
-    // println!("group: {:#?}", group);
-    
-    
-
-
-    // let key = Key::new(None, name, &config::Config::default().password_options);
-    // key.persist().unwrap();
-    // window.emit("key_created", key).unwrap();
+    window.emit("refresh_ui", {}).unwrap();
 }
 
 #[tauri::command]
-// fn generate_password(window: Window, options: config::PasswordOptions) -> String {
 fn generate_password(window: Window, options: config::PasswordOptions) -> String {
     let pg = PasswordGenerator::new()
         .length(options.length as usize)
@@ -145,50 +171,31 @@ fn generate_password(window: Window, options: config::PasswordOptions) -> String
         .strict(true);
     let password = pg.generate_one().unwrap();
     password
-    // let password = Key::generate_password(&password_options);
-    // window.emit("password_generated", password.clone()).unwrap();
-    // Ok(password)
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 fn upload_kdbx_database(
-    // window: Window,
     state: State<InternalState>,
-    // path: BufReader<R>,
     path: String,
     password: String,
 ) -> Result<(), String> {
-    // println!("Database path: {}", path);
-    //TODO: Check if file exists
-
     let mut database_path = state.database_path.lock().unwrap();
     *database_path = path;
 
     let mut database_password = state.database_password.lock().unwrap();
     *database_password = password;
 
-
-    // let kdbx = kdbx_rs::open(&database_path.to_string()).unwrap();
-    // let key = CompositeKey::from_password(&password);
-    // let mut unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string())?;
-    // println!("Database unlocked: {:#?}", unlocked.database());
-    // let mut database_unlocked = state.database.lock().unwrap();
-    // let refto = Arc::new(Mutex::new(unlocked.database_mut()));
-    
-
-    //TODO: add a mutable reference to the database to the state. I am really not sure that cloning
-    //is the best way to do this.
-    // *database_unlocked = unlocked.database_mut();
-    // println!("Database unlocked: {:#?}", database_unlocked);
-    Ok(())
-
-    // window.emit("key_created", key).unwrap();
+    let kdbx = kdbx_rs::open(&database_path.to_string()).unwrap();
+    let key = CompositeKey::from_password(&database_password);
+    let unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string());
+    match unlocked {
+        Ok(mut e) => {
+            let mut database_unlocked = state.database.lock().unwrap();
+            *database_unlocked = e.database_mut().clone();
+            Ok(())
+        }
+        Err(e) => {
+            return Err(e);
+        }
+    }
 }
-
-// fn manage_database(database_path: String, database_password: String) -> Result<&'static mut kdbx_rs::database::Database, String> {
-    // let kdbx = kdbx_rs::open(&database_path.to_string()).unwrap();
-    // let key = CompositeKey::from_password(&database_password);
-    // let mut unlocked = kdbx.unlock(&key).map_err(|e| e.1.to_string())?;
-
-    // Ok(unlocked.database_mut())
-// } 

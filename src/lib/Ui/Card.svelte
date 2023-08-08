@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="card variant-glass-surface">
+<div class="card">
 	<header class="card-header">
 		<div class="flex flex-col">
 			<div class="">
@@ -17,7 +17,7 @@
 						</div>
 						<div class="flex flex-row items-center justify-end gap-2">
 							<slot name="actions">
-								<button type="button" class="btn-icon btn-icon-sm variant-ghost-primary">
+								<button type="button" class="btn-icon btn-icon-sm">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
@@ -33,7 +33,7 @@
 										/>
 									</svg>
 								</button>
-								<button class="btn-icon btn-icon-sm variant-ghost-primary">
+								<button class="btn-icon btn-icon-sm">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"

@@ -15,7 +15,7 @@
 		// 	if (id === 0) {
 		// 		return true;
 		// 	}
-		return false;
+		return true;
 	};
 
 	const onToggle = (e: any, uuid: string) => {
@@ -24,12 +24,13 @@
 		} else {
 			current = '';
 		}
+		return;
 	};
 </script>
 
 {#each children as child, i}
 	<TreeViewItem
-		regionSummary={current === child.uuid ? 'font-bold' : ''}
+		regionSummary={current === child.uuid ? '' : ''}
 		open={open(i)}
 		on:toggle={(e) => {
 			handleTileClick(e, child.uuid), onToggle(e, child.uuid), setBreadcrumb(child.name);
