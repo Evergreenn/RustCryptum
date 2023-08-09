@@ -33,12 +33,12 @@
 	// 		database_description: string;
 	// 	};
 	// }
-	export let database = {};
-	export let currentTile = 0;
+	export let database: any = {};
+	export let currentTile: number = 0;
 
 	let currentGroup: any = [];
 
-	const onHandleCopyClick = async (uuid, value) => {
+	const onHandleCopyClick = async (uuid: string, value: string) => {
 		const item = findRecursivlyInArrayEntries(database.groups, uuid);
 		if (item.length === 0) {
 			return;
@@ -63,8 +63,8 @@
 	const findRecursivlyInArrayEntries = (array: [], key: string) => {
 		let result: any = [];
 		for (let i = 0; i < array.length; i++) {
-			array.forEach((el) => {
-				el.entries.forEach((e) => {
+			array.forEach((el: any) => {
+				el.entries.forEach((e: any) => {
 					if (e.uuid === key) {
 						result.push(e);
 					}
@@ -80,7 +80,7 @@
 		return result;
 	};
 
-	const findRecursivlyInArray = (array: [], key) => {
+	const findRecursivlyInArray = (array: [], key: string) => {
 		let result = [];
 		for (let i = 0; i < array.length; i++) {
 			if (array[i].uuid === key) {

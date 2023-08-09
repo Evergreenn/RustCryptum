@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { useStateStore } from '$lib/stores/stateStore';
 
-	let breadcrumb: any = '';
+	let breadcrumb: any = 'Root';
 	let statestore = useStateStore();
 
 	$: {
-		breadcrumb = $statestore.breadcrumb;
+		breadcrumb = $statestore.breadcrumb || 'Root';
 	}
 </script>
 

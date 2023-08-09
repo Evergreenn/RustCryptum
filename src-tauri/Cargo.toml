@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "RustCryptum"
 version = "0.0.1-a.1"
-description = "A Tauri App"
+description = "Your Fortified Password Fortress"
 authors = ["Guillaume Girard <guillaumegirardpro@gmail.com>"]
 license = ""
 repository = ""
-default-run = "app"
+default-run = "RustCryptum"
 edition = "2021"
 rust-version = "1.60"
 

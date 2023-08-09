@@ -18,7 +18,7 @@
 	export let toggleInit = () => {};
 
 	const onClick = () => {
-    isLoading = true;
+		isLoading = true;
 		invoke('create_database', {
 			name: databaseName,
 			description: databaseDescription,
@@ -78,7 +78,7 @@
 		<input
 			bind:value={databasePassword}
 			class="input"
-			type="text"
+			type="password"
 			placeholder="Random Database Password"
 		/>
 	</label>

@@ -9,18 +9,12 @@
 	import { goto } from '$app/navigation';
 
 	import { useStateStore } from '$lib/stores/stateStore';
-	import ImportDatabase from '$lib/Forms/ImportDatabase.svelte';
 
 	const state = useStateStore();
-	const toggleInit = () => {
-		$state.initialized = true;
-	};
-
-	$: {
-		if ($state.initialized === true) {
-			goto('/home');
-		}
-	}
+	// const toggleInit = () => {
+	// 	$state.initialized = true;
+	// 	goto('/home');
+	// };
 
 	let files: FileList;
 	let message: string = 'Upload or drop your .kdbx file here';
@@ -33,10 +27,10 @@
 	const onCompleteHandler = () => {
 		isLoading = true;
 		invoke('upload_kdbx_database', { path: selected, password })
-			.then((res) => {
-				toggleInit();
+			.then((_res) => {
+				$state.initialized = true;
+				goto('/home');
 				isLoading = false;
-				console.log(res);
 			})
 			.catch((err) => {
 				isLoading = false;

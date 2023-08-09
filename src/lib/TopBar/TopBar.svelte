@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
 	import { LightSwitch, modalStore } from '@skeletonlabs/skeleton';
-	import { Avatar } from '@skeletonlabs/skeleton';
 	import Breadcrumb from '$lib/Ui/breadcrumb.svelte';
 	import AddNewKey from '$lib/Forms/AddNewKey.svelte';
 	import AddNewFolder from '$lib/Forms/AddNewFolder.svelte';
+
+	import type { PopupSettings } from '@skeletonlabs/skeleton';
+	import MainAvatar from '$lib/Ui/MainAvatar.svelte';
 
 	const modalComponent = {
 		ref: AddNewKey
@@ -16,6 +18,15 @@
 		// slot: '<p>Skeleton</p>'
 	};
 
+	let comboboxValue: string;
+
+	const popupCombobox: PopupSettings = {
+		event: 'focus-click',
+		target: 'popupCombobox',
+		placement: 'bottom',
+		closeQuery: '.listbox-item'
+	};
+
 	const onEntrieCreationHandler = () => {
 		const modal = {
 			type: 'component',
@@ -23,10 +34,6 @@
 			component: modalComponent
 		};
 		modalStore.trigger(modal);
-	};
-
-	const onAvatarClickHandler = () => {
-		console.log('avatar clicked');
 	};
 
 	const onFolderCreationHandler = () => {
@@ -117,15 +124,7 @@
 			<div class="">
 				<LightSwitch />
 			</div>
-			<div class="">
-				<Avatar
-					on:click={onAvatarClickHandler}
-					class=""
-					src="https://images.unsplash.com/photo-1617296538902-887900d9b592?ixid=M3w0Njc5ODF8MHwxfGFsbHx8fHx8fHx8fDE2ODc5NzExMDB8&ixlib=rb-4.0.3&w=128&h=128&auto=format&fit=crop"
-					width="w-14"
-					rounded="rounded-full"
-				/>
-			</div>
+			<MainAvatar />
 		</div>
 	</div>
 	<hr class="!border-t-4 ml-2 mr-8 mb-4 mt-3" />

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import SidebarLeft from '$lib/sidebar/SidebarLeft.svelte';
-	import { Toast } from '@skeletonlabs/skeleton';
-	import { Modal } from '@skeletonlabs/skeleton';
 	import TopBar from '$lib/TopBar/TopBar.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
@@ -36,9 +34,6 @@
 		databasePromise = getDatabase();
 	});
 </script>
-
-<Modal />
-<Toast />
 
 {#if initialized === true}
 	{#await databasePromise}

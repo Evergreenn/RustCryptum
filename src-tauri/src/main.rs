@@ -6,6 +6,7 @@ use models::kdbx_keys;
 use passwords::PasswordGenerator;
 use std::fs::File;
 use std::sync::{Arc, Mutex};
+use std::{thread, time};
 
 // use crate::models::key::*;
 use tauri::{Manager, State, Window};
@@ -63,6 +64,7 @@ fn main() {
             create_new_folder,
             upload_kdbx_database,
             generate_password,
+            shutdown,
             create_database
         ])
         .run(tauri::generate_context!())
@@ -183,9 +185,6 @@ fn create_database(
     name: String,
     description: String,
 ) -> Result<(), String> {
-    let mut database_path = state.database_path.lock().unwrap();
-    *database_path = path;
-
     let mut database_password = state.database_password.lock().unwrap();
     *database_password = password;
 
@@ -201,8 +200,11 @@ fn create_database(
     kdbx.set_key(CompositeKey::from_password(&database_password.clone()))
         .unwrap();
 
-    let full_path = format!("{}/{}.{}", &database_path, &name, "kdbx");
+    let full_path = format!("{}/{}.{}", path, &name, "kdbx");
     println!("full_path: {}", full_path);
+
+    let mut database_path = state.database_path.lock().unwrap();
+    *database_path = full_path.clone();
 
     let file = File::create(&full_path);
     match file {
@@ -224,6 +226,13 @@ fn create_database(
             return Err(e);
         }
     }
+}
+
+#[tauri::command(async)]
+fn shutdown(app: tauri::AppHandle) {
+    //TODO: Save database before shutdown
+    thread::sleep(time::Duration::from_secs(5));
+    app.exit(0)
 }
 
 #[tauri::command(async)]

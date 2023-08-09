@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { ProgressRadial, modalStore } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, modalStore, toastStore } from '@skeletonlabs/skeleton';
 	import PasswordOptions from './PasswordOptions.svelte';
 	import { useStateStore } from '$lib/stores/stateStore';
+
 	let keyName: string = '';
 	let userName: string = '';
 	let password: string = '';
@@ -28,12 +29,27 @@
 			currentGroup: $stateStore.breadcrumb,
 			username: userName,
 			url
-		}).then((res) => {
-			// if (res === true) {
-			isLoading = false;
-			modalStore.close();
-			// }
-		});
+		})
+			.then((_res) => {
+				// if (res === true) {
+				isLoading = false;
+				modalStore.close();
+				let toast = {
+					message: 'New key created successfully',
+					background: 'variant-filled-success'
+				};
+				toastStore.trigger(toast);
+				// }
+			})
+			.catch((err) => {
+				isLoading = false;
+				console.log(err);
+				let toast = {
+					message: 'Error creating new key',
+					background: 'variant-filled-error'
+				};
+				toastStore.trigger(toast);
+			});
 	};
 
 	const onHandlePasswordGeneration = async () => {
@@ -52,7 +68,7 @@
 	};
 </script>
 
-<div class="card p-8 w-full">
+<div class="card p-8 w-1/2">
 	<form class="relative pb-16">
 		<label class="label mb-6">
 			<span>Key name</span>
