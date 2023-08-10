@@ -1,7 +1,6 @@
 <!-- <svelte:options accessors={true} /> -->
 
 <script lang="ts">
-	// import { invoke } from '@tauri-apps/api/tauri';
 	import { page } from '$app/stores';
 	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';

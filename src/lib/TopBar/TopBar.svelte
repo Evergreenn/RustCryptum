@@ -3,6 +3,7 @@
 	import Breadcrumb from '$lib/Ui/breadcrumb.svelte';
 	import AddNewKey from '$lib/Forms/AddNewKey.svelte';
 	import AddNewFolder from '$lib/Forms/AddNewFolder.svelte';
+	import Button from '$lib/Ui/Button/Button.svelte';
 
 	import type { PopupSettings } from '@skeletonlabs/skeleton';
 	import MainAvatar from '$lib/Ui/MainAvatar.svelte';
@@ -54,9 +55,9 @@
 				<Breadcrumb />
 			</div>
 			<!-- creation button -->
-			<div class="p-2 flex flex-row sm:max-lg:flex-col gap-4">
-				<button type="button" class="btn variant-filled-primary" on:click={onEntrieCreationHandler}>
-					<span>
+			<div class="p-2 flex flex-row gap-4">
+				<Button onClick={onEntrieCreationHandler}>
+					<span slot="icon">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -68,11 +69,11 @@
 							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 						</svg>
 					</span>
-					<span>Add</span>
-				</button>
+					<span slot="text">Add</span>
+				</Button>
 
-				<button type="button" class="btn variant-filled-primary" on:click={onFolderCreationHandler}>
-					<span>
+				<Button type={'button'} onClick={onFolderCreationHandler}>
+					<span slot="icon">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -88,7 +89,7 @@
 							/>
 						</svg>
 					</span>
-				</button>
+				</Button>
 				<!-- <button class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2 px-4 rounded"> -->
 				<!-- 	Main -->
 				<!-- </button> -->
