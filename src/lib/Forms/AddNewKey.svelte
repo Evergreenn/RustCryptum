@@ -98,7 +98,7 @@
 				<button
 					on:click={onClick}
 					type="submit"
-					class="btn variant-ghost-primary absolute bottom-0 l weft-0 right-0"
+					class="btn variant-ghost-primary absolute bottom-0 right-0"
 				>
 					{#if isLoading}
 						<ProgressRadial width={'w-4'} stroke={40} value={undefined} />

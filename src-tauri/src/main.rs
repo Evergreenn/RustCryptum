@@ -14,6 +14,7 @@ use tauri::{Manager, State, Window};
 pub mod config;
 pub mod models;
 mod repository;
+pub mod utils;
 
 // #[derive(Serialize, Deserialize)]
 struct InternalState {

@@ -53,7 +53,7 @@
 				groups={database.groups}
 				databaseName={database.meta.database_name}
 			/>
-			<div class="flex flex-col basis-4/5 top-0 pl-2 overflow-auto h-screen">
+			<div class="flex flex-col basis-4/5 top-0 mt-1 pl-2 overflow-auto h-screen">
 				<TopBar />
 				<slot />
 			</div>

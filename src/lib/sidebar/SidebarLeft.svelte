@@ -2,10 +2,10 @@
 
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Logo from '$lib/Ui/Logo/Logo.svelte';
 	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
 	import { setContext } from 'svelte';
-	import logo from '$lib/assets/logo-no-background.svg';
 
 	export let currentTile: number = 0;
 	export let groups: [] = [];
@@ -44,9 +44,9 @@
 </script>
 
 <div class="bg-suface-200-700-token h-screen basis-1/5">
-	<!-- <div class=" flex flex-row items-center justify-between mb-4"> -->
-	<div class="max-w-3xl">
-		<img src={logo} class="h-auto max-w-full mt-5 mb-6" />
+	<div class=" flex flex-col items-center justify-between">
+		<!-- <div class="max-w-3xl"> -->
+		<Logo />
 	</div>
 	<hr class="!border-t-4 ml-6 mr-6 mb-4" />
 

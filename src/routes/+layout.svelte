@@ -7,5 +7,5 @@
 </script>
 
 <Modal />
-<Toast position={'tr'} duration={500} />
+<Toast position={'tr'} class={'top-32'} duration={200} />
 <slot />
