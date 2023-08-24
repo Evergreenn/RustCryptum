@@ -99,50 +99,48 @@
 	}
 </script>
 
-<div
-	class="overflow-auto pb-10 grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-2"
->
-	{#if currentGroup.length > 0}
-		{#each currentGroup[0].entries as field}
-			<Card>
-				<span slot="title">{field.card.title}</span>
-				<span slot="body">
-					<div class="flex flex-col gap-4">
-						<div class="w-full text-token flex items-center gap-4">
-							<input
-								class="input"
-								type="text"
-								value={field.card.username}
-								disabled
-								data-clipboard="usenameInput"
-							/>
-							<button
-								on:click={onHandleCopyClick(field.uuid, 'username')}
-								class="btn variant-filled">Copy</button
-							>
-						</div>
-						<div class="w-full text-token flex items-center gap-4">
-							<input
-								class="input"
-								type="password"
-								value={field.card.password}
-								disabled
-								data-clipboard="passwordInput"
-							/>
-							<button
-								on:click={onHandleCopyClick(field.uuid, 'password')}
-								class="btn variant-filled">Copy</button
-							>
-						</div>
+<!-- <div -->
+<!-- 	class="overflow-auto pb-10 grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-2" -->
+<!-- > -->
+{#if currentGroup.length > 0}
+	{#each currentGroup[0].entries as field}
+		<Card>
+			<span slot="title">{field.card.title}</span>
+			<span slot="body">
+				<div class="flex flex-col gap-4">
+					<div class="w-full text-token flex items-center gap-4">
+						<input
+							class="input"
+							type="text"
+							value={field.card.username}
+							disabled
+							data-clipboard="usenameInput"
+						/>
+						<button on:click={onHandleCopyClick(field.uuid, 'username')} class="btn variant-filled"
+							>Copy</button
+						>
 					</div>
-				</span>
-				<span slot="footer">
-					<div class="flex flex-row justify-end sm:max-lg:flex-col gap-4">
-						<!-- <button type="button" class="btn variant-filled-primary">Copy Password</button> -->
-						<a href={'card/' + field.uuid} class="btn variant-filled-primary">More</a>
+					<div class="w-full text-token flex items-center gap-4">
+						<input
+							class="input"
+							type="password"
+							value={field.card.password}
+							disabled
+							data-clipboard="passwordInput"
+						/>
+						<button on:click={onHandleCopyClick(field.uuid, 'password')} class="btn variant-filled"
+							>Copy</button
+						>
 					</div>
-				</span>
-			</Card>
-		{/each}
-	{/if}
-</div>
+				</div>
+			</span>
+			<span slot="footer">
+				<div class="flex flex-row justify-end sm:max-lg:flex-col gap-4">
+					<!-- <button type="button" class="btn variant-filled-primary">Copy Password</button> -->
+					<a href={'card/' + field.uuid} class="btn variant-filled-primary">More</a>
+				</div>
+			</span>
+		</Card>
+	{/each}
+{/if}
+<!-- </div> -->

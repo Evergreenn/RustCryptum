@@ -68,7 +68,7 @@
 	};
 </script>
 
-<div class="card p-8 w-1/2">
+<div class="card p-8 w-1/2 border border-secondary-500">
 	<form class="relative pb-16">
 		<label class="label mb-6">
 			<span>Key name</span>

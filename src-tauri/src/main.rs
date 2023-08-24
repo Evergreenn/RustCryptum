@@ -14,7 +14,7 @@ use tauri::{Manager, State, Window};
 pub mod config;
 pub mod models;
 mod repository;
-pub mod utils;
+// pub mod utils;
 
 // #[derive(Serialize, Deserialize)]
 struct InternalState {
@@ -66,6 +66,7 @@ fn main() {
             upload_kdbx_database,
             generate_password,
             shutdown,
+            get_one_key,
             create_database
         ])
         .run(tauri::generate_context!())
@@ -77,6 +78,16 @@ fn get_keys(state: State<InternalState>) -> kdbx_keys::Database {
     let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
     println!("db_groups: {:#?}", db.groups);
     db
+}
+
+#[tauri::command]
+fn get_one_key(state: State<InternalState>, id: String) -> kdbx_keys::Entry {
+    // let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
+    // let entry = db.get_entry(id);
+    let mut database = state.database.lock().unwrap();
+    let entry = database.find_entry(|e| e.uuid().to_string() == id).unwrap();
+    let entry = kdbx_keys::Entry::new(entry.clone());
+    entry
 }
 
 #[tauri::command(async)]

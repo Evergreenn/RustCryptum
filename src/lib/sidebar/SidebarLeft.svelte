@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Logo from '$lib/Ui/Logo/Logo.svelte';
+	// import Logo from '$lib/Ui/Logo/Logo.svelte';
 	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
 	import { setContext } from 'svelte';
@@ -46,7 +46,7 @@
 <div class="bg-suface-200-700-token h-screen basis-1/5">
 	<div class=" flex flex-col items-center justify-between">
 		<!-- <div class="max-w-3xl"> -->
-		<Logo />
+		<!-- <Logo /> -->
 	</div>
 	<hr class="!border-t-4 ml-6 mr-6 mb-4" />
 

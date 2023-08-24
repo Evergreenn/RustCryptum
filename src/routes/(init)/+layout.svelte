@@ -55,7 +55,12 @@
 			/>
 			<div class="flex flex-col basis-4/5 top-0 mt-1 pl-2 overflow-auto h-screen">
 				<TopBar />
-				<slot />
+				<div
+					class="overflow-auto pb-10
+          pr-2"
+				>
+					<slot />
+				</div>
 			</div>
 		</div>
 	{/await}

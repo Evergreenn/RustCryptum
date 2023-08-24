@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ImportDatabase from '$lib/Forms/ImportDatabase.svelte';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 
 	enum ButtonType {
@@ -12,11 +11,12 @@
 	export let onClick: () => void;
 	export let disabled: boolean;
 	export let isLoading: boolean;
+	export let size: string;
 
 	let isMobile: boolean = false;
 	let isMdScreen: boolean = false;
-	const customClassMobile = `btn-icon ${variant}`;
-	const customClass = `w-full btn ${variant}`;
+	const customClassMobile = `btn-icon ${variant} ${size}`;
+	const customClass = `w-full btn ${variant} ${size}`;
 
 	let windowWidth: number = 0;
 
