@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LightSwitch, modalStore } from '@skeletonlabs/skeleton';
+	import { LightSwitch, getModalStore } from '@skeletonlabs/skeleton';
 	import Breadcrumb from '$lib/Ui/breadcrumb.svelte';
 	import AddNewKey from '$lib/Forms/AddNewKey.svelte';
 	import AddNewFolder from '$lib/Forms/AddNewFolder.svelte';
@@ -7,6 +7,8 @@
 
 	import type { PopupSettings } from '@skeletonlabs/skeleton';
 	import MainAvatar from '$lib/Ui/MainAvatar.svelte';
+
+	const modalStore = getModalStore();
 
 	const modalComponent = {
 		ref: AddNewKey

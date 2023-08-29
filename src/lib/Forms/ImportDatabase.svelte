@@ -3,9 +3,10 @@
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { open } from '@tauri-apps/api/dialog';
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 	import Card from '$lib/Ui/Card.svelte';
 
+	const toastStore = getToastStore();
 	let files: FileList;
 	let message: string = 'Upload or drop your .kdbx file here';
 	let subMessage: string = 'Only .kdbx file are allowed';

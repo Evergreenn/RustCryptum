@@ -15,7 +15,7 @@
 		// 	if (id === 0) {
 		// 		return true;
 		// 	}
-		return false;
+		return true;
 	};
 
 	const onToggle = (e: any, uuid: string) => {
@@ -32,8 +32,9 @@
 	<TreeViewItem
 		regionSummary={current === child.uuid ? '' : ''}
 		open={open(i)}
+		hover={'hover:variant-filled-primary'}
 		on:toggle={(e) => {
-			handleTileClick(e, child.uuid), onToggle(e, child.uuid), setBreadcrumb(child.name);
+			handleTileClick(e, child.uuid), onToggle(e, child.uuid), setBreadcrumb(child.name), open(i);
 		}}
 	>
 		<svelte:fragment slot="lead">

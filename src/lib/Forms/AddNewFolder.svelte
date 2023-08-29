@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { ProgressRadial, modalStore, toastStore } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import { useStateStore } from '$lib/stores/stateStore';
+
+	const toastStore = getToastStore();
+	const modalStore = getModalStore();
 
 	let folderName: string = '';
 	let isLoading: boolean = false;

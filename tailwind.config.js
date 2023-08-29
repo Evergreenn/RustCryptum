@@ -1,8 +1,19 @@
+// @ts-check
+import { join } from 'path';
+
+// 1. Import the Skeleton plugin
+import { skeleton } from '@skeletonlabs/tw-plugin';
+import { tealLightning } from './tealLightning';
+import { crimson } from './crimson';
+
 /** @type {import('tailwindcss').Config} */
 export default {
+  // 2. Opt for dark mode to be handled via the class method
   darkMode: 'class',
-  content: ['./src/**/*.{html,js,svelte,ts}',
-    require('path').join(require.resolve(
+  content: [
+    './src/**/*.{html,js,svelte,ts}',
+    // 3. Append the path to the Skeleton package
+    join(require.resolve(
       '@skeletonlabs/skeleton'),
       '../**/*.{html,js,svelte,ts}'
     )
@@ -11,8 +22,15 @@ export default {
     extend: {},
   },
   plugins: [
+    // 4. Append the Skeleton plugin (after other plugins)
     require('@tailwindcss/forms'),
-    ...require('@skeletonlabs/skeleton/tailwind/skeleton.cjs')()
-  ],
+    skeleton({
+      themes: {
+        custom: [
+          tealLightning,
+          crimson
+        ]
+      }
+    })
+  ]
 }
-

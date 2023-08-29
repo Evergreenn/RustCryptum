@@ -1,15 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import BackButton from '$lib/Ui/Button/BackButton.svelte';
+	import ThemeSwitcher from '$lib/Ui/Button/ThemeSwitcher.svelte';
+	import Title from '$lib/Ui/Title/Title.svelte';
 
 	const onClick = () => {
 		goto('/home');
 	};
 </script>
 
-settings
-<button
-	on:click={onClick}
-	class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
->
-	Click me
-</button>
+<div class="flex flex-row justify-between">
+	<BackButton />
+</div>
+
+<Title title="Change theme" weight={'h1'} />
+<div class={'mt-4'}>
+	<ThemeSwitcher />
+</div>

@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import Logo from '$lib/Ui/Logo/Logo.svelte';
 	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
+	import MainLayout from '$lib/mainLayout/MainLayout.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
 	import { setContext } from 'svelte';
 
@@ -11,6 +12,7 @@
 	export let groups: [] = [];
 	export let databaseName: string = '';
 
+	let myTreeView: TreeView;
 	// $: console.log('groups: ', groups);
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 
@@ -50,7 +52,7 @@
 	</div>
 	<hr class="!border-t-4 ml-6 mr-6 mb-4" />
 
-	<TreeView>
+	<TreeView on:click={() => myTreeView.expandAll()} bind:this={myTreeView}>
 		<NodeTreeViewChild children={tree} handleTileClick={toggleTile} />
 	</TreeView>
 </div>

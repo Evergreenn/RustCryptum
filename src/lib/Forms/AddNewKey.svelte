@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { ProgressRadial, modalStore, toastStore } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import PasswordOptions from './PasswordOptions.svelte';
 	import { useStateStore } from '$lib/stores/stateStore';
+
+	const toastStore = getToastStore();
+	const modalStore = getModalStore();
 
 	let keyName: string = '';
 	let userName: string = '';

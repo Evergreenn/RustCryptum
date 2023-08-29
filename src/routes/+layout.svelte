@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
-	import { storePopup } from '@skeletonlabs/skeleton';
-	import { Toast } from '@skeletonlabs/skeleton';
+	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { Modal } from '@skeletonlabs/skeleton';
+	import { Toast } from '@skeletonlabs/skeleton';
+	import { storePopup } from '@skeletonlabs/skeleton';
+
+	initializeStores();
+	// getToastStore();
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 </script>
 

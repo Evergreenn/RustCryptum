@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore } from '@skeletonlabs/skeleton';
 	import AddNewKey from '$lib/Forms/AddNewKey.svelte';
 
+	const modalStore = getModalStore();
 	const displayModal = () => {
 		const modalComponent = {
 			ref: AddNewKey

@@ -3,8 +3,9 @@
 	import { emit, listen } from '@tauri-apps/api/event';
 	import Card from '$lib/Ui/Card.svelte';
 	import { writeText } from '@tauri-apps/api/clipboard';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 
+	const toastStore = getToastStore();
 	// interface Field {
 	// 	key: string;
 	// 	value: string;

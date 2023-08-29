@@ -3,9 +3,10 @@
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { open } from '@tauri-apps/api/dialog';
 	import { goto } from '$app/navigation';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { FileDropzone, type ToastSettings } from '@skeletonlabs/skeleton';
 
+	const toastStore = getToastStore();
 	let files: FileList;
 	let databaseName: string = '';
 	let databasePassword: string = '';
