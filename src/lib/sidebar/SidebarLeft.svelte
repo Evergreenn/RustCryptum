@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import Logo from '$lib/Ui/Logo/Logo.svelte';
 	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
+	import UlViewChild from '$lib/Ui/UlViewChild.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
 
 	export let currentTile: number = 0;
@@ -48,7 +49,22 @@
 	</div>
 	<hr class="!border-t-4 ml-6 mr-6 mb-4" />
 
-	<TreeView on:click={() => myTreeView.expandAll()} bind:this={myTreeView}>
-		<NodeTreeViewChild children={tree} handleTileClick={toggleTile} />
-	</TreeView>
+	<!-- <TreeView on:click={() => myTreeView.expandAll()} bind:this={myTreeView}> -->
+	<!-- 	<NodeTreeViewChild children={tree} handleTileClick={toggleTile} /> -->
+	<!-- </TreeView> -->
+
+	<nav class="list-nav">
+		<!-- (optionally you can provide a label here) -->
+		<ul>
+			<UlViewChild children={tree} handleTileClick={toggleTile} />
+
+			<!-- <li> -->
+			<!-- 	<a href="/elements/lists"> -->
+			<!-- 		<span class="badge bg-primary-500">💀</span> -->
+			<!-- 		<span class="flex-auto">Skeleton</span> -->
+			<!-- 	</a> -->
+			<!-- </li> -->
+			<!-- ... -->
+		</ul>
+	</nav>
 </div>
