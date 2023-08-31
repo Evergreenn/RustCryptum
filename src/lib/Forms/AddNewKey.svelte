@@ -97,12 +97,19 @@
 					class="btn variant-ghost-primary">Generate Password</button
 				>
 			</div>
-			<label class="label">
-				<button
-					on:click={onClick}
-					type="submit"
-					class="btn variant-ghost-primary absolute bottom-0 right-0"
-				>
+		</div>
+		<div class="flex flex-col gap-20 w-full">
+			<PasswordOptions
+				bind:length
+				bind:useSymbols
+				bind:useSpaces
+				bind:useNumbers
+				bind:useUppercase
+				bind:useLowercase
+				bind:useExcludeSimilarCharacters
+			/>
+			<label class="label self-end mt-36">
+				<button on:click={onClick} type="submit" class="btn variant-ghost-primary">
 					{#if isLoading}
 						<ProgressRadial width={'w-4'} stroke={40} value={undefined} />
 					{:else}
@@ -111,14 +118,5 @@
 				</button>
 			</label>
 		</div>
-		<PasswordOptions
-			bind:length
-			bind:useSymbols
-			bind:useSpaces
-			bind:useNumbers
-			bind:useUppercase
-			bind:useLowercase
-			bind:useExcludeSimilarCharacters
-		/>
 	</form>
 </div>

@@ -11,6 +11,7 @@
 	// }
 	export let title: string;
 	export let weight: string;
+	export let divider: boolean = false;
 
 	$: title = formatTitle(title);
 </script>
@@ -29,4 +30,7 @@
 	<h6 class="h6">{title}</h6>
 {:else}
 	<h6 class="h6">{title}</h6>
+{/if}
+{#if divider}
+	<hr class="!border-t-4 mt-4 mb-8" />
 {/if}

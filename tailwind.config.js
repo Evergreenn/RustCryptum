@@ -26,6 +26,16 @@ export default {
     require('@tailwindcss/forms'),
     skeleton({
       themes: {
+        preset: [{
+          name: 'modern', enhancements: true,
+        },
+        {
+          name: 'wintry', enhancements: true,
+        },
+        {
+          name: 'vintage', enhancements: true,
+        },
+        ],
         custom: [
           tealLightning,
           crimson

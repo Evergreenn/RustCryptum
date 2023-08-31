@@ -66,6 +66,7 @@ fn main() {
             upload_kdbx_database,
             generate_password,
             shutdown,
+            lock,
             get_one_key,
             create_database
         ])
@@ -245,6 +246,14 @@ fn shutdown(app: tauri::AppHandle) {
     //TODO: Save database before shutdown
     thread::sleep(time::Duration::from_secs(5));
     app.exit(0)
+}
+
+#[tauri::command(async)]
+fn lock(app: tauri::AppHandle) -> bool {
+    //TODO: Save database before lock
+    thread::sleep(time::Duration::from_secs(5));
+    true
+    // app.exit(0)
 }
 
 #[tauri::command(async)]

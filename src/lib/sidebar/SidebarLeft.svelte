@@ -1,12 +1,8 @@
-<!-- <svelte:options accessors={true} /> -->
-
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Logo from '$lib/Ui/Logo/Logo.svelte';
 	import NodeTreeViewChild from '$lib/Ui/NodeTreeViewChild.svelte';
-	import MainLayout from '$lib/mainLayout/MainLayout.svelte';
 	import { TreeView, TreeViewItem } from '@skeletonlabs/skeleton';
-	import { setContext } from 'svelte';
 
 	export let currentTile: number = 0;
 	export let groups: [] = [];

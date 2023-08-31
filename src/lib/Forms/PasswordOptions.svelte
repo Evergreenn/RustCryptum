@@ -34,6 +34,7 @@
 
 <div class="w-full h-60 flex flex-col pt-4">
 	<RangeSlider
+		class="mt-4 mb-8"
 		name="range-slider"
 		bind:value={length}
 		min={6}
@@ -47,28 +48,29 @@
 			<div class="text-xs">{length} / {max_length}</div>
 		</div>
 	</RangeSlider>
-	<div class="flex flex-row pt-4">
-		<div class="flex flex-col w-1/2 gap-4">
-			<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useSymbols}
-				>use Symbols (e.g. !@#$%^&*)</SlideToggle
-			>
-			<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useSpaces}
-				>use Spaces</SlideToggle
-			>
-			<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useNumbers}
-				>use Numbers</SlideToggle
-			>
-		</div>
-		<div class="flex flex-col w-1/2 gap-4">
-			<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useUppercase}
-				>use Uppercase Characters</SlideToggle
-			>
-			<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useLowercase}
-				>use Lowercase Characters</SlideToggle
-			>
-			<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useExcludeSimilarCharacters}
-				>exclude Similar Characters (e.g. i, l, 1, L, o, 0, O)</SlideToggle
-			>
-		</div>
+	<!-- <div class="flex flex-row pt-4"> -->
+	<div class="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1">
+		<!-- <div class="flex flex-col w-1/2 gap-4"> -->
+		<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useSymbols}
+			>use Symbols (e.g. !@#$%^&*)</SlideToggle
+		>
+		<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useSpaces}
+			>use Spaces</SlideToggle
+		>
+		<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useNumbers}
+			>use Numbers</SlideToggle
+		>
+		<!-- </div> -->
+		<!-- <div class="flex flex-col w-1/2 gap-4"> -->
+		<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useUppercase}
+			>use Uppercase Characters</SlideToggle
+		>
+		<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useLowercase}
+			>use Lowercase Characters</SlideToggle
+		>
+		<SlideToggle name="slide" active={'bg-primary-500'} bind:checked={useExcludeSimilarCharacters}
+			>exclude Similar Characters</SlideToggle
+		>
+		<!-- </div> -->
 	</div>
 </div>

@@ -13,7 +13,7 @@
 	<BackButton />
 </div>
 
-<Title title="Change theme" weight={'h1'} />
+<Title divider={true} title="Change theme" weight={'h1'} />
 <div class={'mt-4'}>
 	<ThemeSwitcher />
 </div>

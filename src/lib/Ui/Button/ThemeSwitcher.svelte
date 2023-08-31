@@ -1,18 +1,21 @@
 <script lang="ts">
-	import Button from './Button.svelte';
+	import SmallCard from '../SmallCard.svelte';
+	import Placeholder from '../Placeholder.svelte';
 
-	const theme = ['tealLightning', 'crimson'];
+	const theme = ['tealLightning', 'crimson', 'modern', 'wintry', 'vintage'];
 
-	const onClickTheme = (item) => {
+	const onClickTheme = (item: string) => {
 		const body = document.body;
 		body.dataset.theme = item;
 	};
 </script>
 
-<div class="flex flex-row gap-4">
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 	{#each theme as item}
-		<button on:click={() => onClickTheme(item)} type="button" class="btn variant-filled-primary"
-			>{item}</button
-		>
+		<SmallCard title={item} pointer={true} onClick={() => onClickTheme(item)}>
+			<span slot="body">
+				<Placeholder color={item} />
+			</span>
+		</SmallCard>
 	{/each}
 </div>
