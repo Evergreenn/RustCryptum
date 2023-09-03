@@ -10,19 +10,12 @@
 	export let databaseName: string = '';
 
 	let myTreeView: TreeView;
-	// $: console.log('groups: ', groups);
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 
 	const toggleTile = (e, uuid: number) => {
 		e.preventDefault();
-		// if (e.detail.open) {
-		console.log('event: ', e);
 		currentTile = uuid;
 		return;
-		// }
-		// else {
-		// currentTile = 0;
-		// }
 	};
 
 	const buildGroupTree = (groups: any) => {
@@ -57,14 +50,6 @@
 		<!-- (optionally you can provide a label here) -->
 		<ul>
 			<UlViewChild children={tree} handleTileClick={toggleTile} />
-
-			<!-- <li> -->
-			<!-- 	<a href="/elements/lists"> -->
-			<!-- 		<span class="badge bg-primary-500">💀</span> -->
-			<!-- 		<span class="flex-auto">Skeleton</span> -->
-			<!-- 	</a> -->
-			<!-- </li> -->
-			<!-- ... -->
 		</ul>
 	</nav>
 </div>
