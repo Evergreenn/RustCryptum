@@ -35,7 +35,7 @@
 	// 	};
 	// }
 	export let database: any = {};
-	export let currentTile: number = 0;
+	export let currentTile: string = '';
 
 	let currentGroup: any = [];
 

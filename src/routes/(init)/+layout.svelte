@@ -2,11 +2,11 @@
 	import SidebarLeft from '$lib/sidebar/SidebarLeft.svelte';
 	import TopBar from '$lib/TopBar/TopBar.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { useStateStore } from '$lib/stores/stateStore';
 	import { goto } from '$app/navigation';
 	import { setContext } from 'svelte';
-	import { emit, listen } from '@tauri-apps/api/event';
+	import { listen } from '@tauri-apps/api/event';
+	import Loader from '$lib/Ui/Loader.svelte';
 
 	const state = useStateStore();
 	const { initialized } = $state;
@@ -30,29 +30,17 @@
 		setContext('database', databasePromise);
 	}
 
-	const event = listen('refresh_ui', (event) => {
+	$: listen('refresh_ui', (_) => {
 		databasePromise = getDatabase();
 	});
 </script>
 
 {#if initialized === true}
 	{#await databasePromise}
-		<div class="flex flex-col items-center justify-center h-screen">
-			<ProgressRadial
-				...
-				stroke={20}
-				meter="stroke-primary-500"
-				track="stroke-primary-500/30"
-				value={undefined}
-			/>
-		</div>
+		<Loader />
 	{:then database}
 		<div class="flex flex-row w-full">
-			<SidebarLeft
-				bind:currentTile
-				groups={database.groups}
-				databaseName={database.meta.database_name}
-			/>
+			<SidebarLeft bind:currentTile groups={database.groups} />
 			<div class="flex flex-col basis-4/5 top-0 mt-1 pl-2 overflow-auto h-screen">
 				<TopBar />
 				<div

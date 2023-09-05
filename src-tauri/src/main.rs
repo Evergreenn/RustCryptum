@@ -96,14 +96,14 @@ fn create_new_folder(
     window: Window,
     state: State<InternalState>,
     name: String,
-    current_group: String,
+    current_group_uuid: String,
 ) -> () {
     let mut database = state.database.lock().unwrap();
 
     let database_path = state.database_path.lock().unwrap();
     let database_password = state.database_password.lock().unwrap();
 
-    let group = database.find_group_mut(|g| g.name() == &current_group);
+    let group = database.find_group_mut(|g| g.uuid().to_string() == current_group_uuid);
 
     let group = if group.is_none() {
         database.root_mut()
@@ -135,7 +135,7 @@ fn create_new_key(
     state: State<InternalState>,
     name: String,
     password: String,
-    current_group: String,
+    current_group_uuid: String,
     username: String,
     url: String,
 ) -> () {
@@ -144,7 +144,7 @@ fn create_new_key(
     let database_path = state.database_path.lock().unwrap();
     let database_password = state.database_password.lock().unwrap();
 
-    let group = database.find_group_mut(|g| g.name() == &current_group);
+    let group = database.find_group_mut(|g| g.uuid().to_string() == current_group_uuid);
 
     let group = if group.is_none() {
         database.root_mut()

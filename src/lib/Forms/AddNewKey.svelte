@@ -29,7 +29,7 @@
 		invoke('create_new_key', {
 			name: keyName,
 			password,
-			currentGroup: $stateStore.breadcrumb,
+			currentGroupUuid: $stateStore.currentFolderUuid,
 			username: userName,
 			url
 		})

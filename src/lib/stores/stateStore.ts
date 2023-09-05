@@ -6,6 +6,7 @@ interface State {
   error: boolean;
   currentTile: number;
   breadcrumb: string
+  currentFolderUuid: string
 }
 
 const state: State = {
@@ -13,7 +14,8 @@ const state: State = {
   loading: false,
   error: false,
   currentTile: 0,
-  breadcrumb: ""
+  breadcrumb: "",
+  currentFolderUuid: ""
 }
 
 export const useStateStore = () => useWritable("state", state);

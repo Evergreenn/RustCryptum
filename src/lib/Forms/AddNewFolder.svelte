@@ -14,7 +14,7 @@
 		isLoading = true;
 		invoke('create_new_folder', {
 			name: folderName,
-			currentGroup: $stateStore.breadcrumb
+			currentGroupUuid: $stateStore.currentFolderUuid
 		})
 			.then((_res) => {
 				isLoading = false;

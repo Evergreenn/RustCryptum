@@ -11,7 +11,6 @@
 		isMobile = windowWidth < 768;
 		isMdScreen = windowWidth < 1024;
 		isLargeScreen = windowWidth > 1200;
-		console.log(isMobile, isMdScreen, isLargeScreen);
 	}
 </script>
 
