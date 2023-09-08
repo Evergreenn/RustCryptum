@@ -1,12 +1,16 @@
 <script lang="ts">
 	import SmallCard from '../SmallCard.svelte';
 	import Placeholder from '../Placeholder.svelte';
+	import { invoke } from '@tauri-apps/api/tauri';
+	import { firstUpper } from '$lib/utils';
 
 	const theme = ['tealLightning', 'crimson', 'modern', 'wintry', 'vintage'];
 
 	const onClickTheme = (item: string) => {
 		const body = document.body;
 		body.dataset.theme = item;
+		item = firstUpper(item);
+		invoke('set_theme', { theme: item });
 	};
 </script>
 

@@ -27,15 +27,10 @@
 		}
 		//HACK: this is a hack to get the margin-left to work
 		toString = `margin-left: ${depth}px`;
-		console.log('toString', toString);
 	}
-
-	// $: children;
 </script>
 
 {#each children as child}
-	<!-- <li class=" ml-[22px] {classesActive(child.uuid)}"> -->
-	<!-- <li class=" ml-[382px] {classesActive(child.uuid)}"> -->
 	<li style={toString} class=" {classesActive(child.uuid)}">
 		<a
 			href="/main/{child.uuid}"

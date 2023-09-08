@@ -2,6 +2,7 @@ use anyhow::Result;
 use ron::ser::{to_string_pretty, PrettyConfig};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
+use strum_macros::EnumString;
 
 const CONFIG_FILE: &str = "config.ron";
 const CONFIG_DIR: &str = ".config";
@@ -13,10 +14,14 @@ pub struct Config {
     pub password_options: PasswordOptions,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, EnumString)]
+// #[strum(serialize_all = "shouty_snake_case")]
 pub enum ColorScheme {
-    Dark,
-    Light,
+    TealLightning,
+    Crimson,
+    Modern,
+    Wintry,
+    Vintage,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -39,6 +44,12 @@ impl Config {
         Config {
             ..Default::default()
         }
+    }
+
+    pub fn set_color_scheme(&mut self, color_scheme: String) {
+        let color_scheme: ColorScheme = color_scheme.parse().unwrap();
+        self.color_scheme = color_scheme;
+        self.save_config();
     }
 
     fn get_or_build_config() -> Result<ConfigPath> {
@@ -85,12 +96,26 @@ impl Config {
             Self::default()
         }
     }
+
+    pub fn save_config(&self) {
+        let pretty = PrettyConfig::new()
+            .depth_limit(2)
+            .separate_tuple_members(true)
+            .enumerate_arrays(true)
+            .extensions(ron::extensions::Extensions::IMPLICIT_SOME);
+
+        let s = to_string_pretty::<Config>(&self, pretty).unwrap();
+
+        let config_path = Config::get_or_build_config().unwrap().config_path;
+
+        std::fs::write(config_path, s).unwrap();
+    }
 }
 
 impl Default for Config {
     fn default() -> Self {
         Config {
-            color_scheme: ColorScheme::Dark,
+            color_scheme: ColorScheme::Crimson,
             password_options: PasswordOptions {
                 length: 32,
                 use_symbols: true,

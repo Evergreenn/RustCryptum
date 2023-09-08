@@ -21,6 +21,7 @@ struct InternalState {
     database_path: Mutex<String>,
     database_password: Mutex<String>,
     database: Arc<Mutex<kdbx_rs::database::Database>>,
+    config: Mutex<config::Config>,
 }
 
 impl Default for InternalState {
@@ -29,13 +30,16 @@ impl Default for InternalState {
             database_path: Mutex::new("".to_string()),
             database_password: Mutex::new("".to_string()),
             database: Arc::new(Mutex::new(kdbx_rs::database::Database::default())),
+            config: Mutex::new(config::Config::default()),
         }
     }
 }
 
 fn build_application() {
-    repository::init();
-    config::Config::load_config(&config::Config::default());
+    // todo!("Build application")
+    // repository::init();
+    // TODO: Load config from file
+    // config::Config::load_config(&config::Config::default());
 }
 
 fn main() {
@@ -48,7 +52,6 @@ fn main() {
                 window.hide().unwrap();
                 println!("Initializing application");
                 build_application();
-                // std::thread::sleep(std::time::Duration::from_secs(5));
                 println!("Done initializing.");
 
                 window.show().unwrap();
@@ -68,6 +71,8 @@ fn main() {
             shutdown,
             lock,
             get_one_key,
+            get_config,
+            set_theme,
             create_database
         ])
         .run(tauri::generate_context!())
@@ -75,9 +80,25 @@ fn main() {
 }
 
 #[tauri::command]
+fn get_config(state: State<InternalState>) -> config::Config {
+    let mut config = state.config.lock().unwrap();
+    *config = config::Config::load_config(&config::Config::default());
+    config.load_config()
+}
+
+#[tauri::command]
+fn set_theme(theme: String, state: State<InternalState>) -> () {
+    let mut config = state.config.lock().unwrap();
+    config.set_color_scheme(theme);
+
+    // *config = config::Config::load_config(&config::Config::default());
+    // config.load_config()
+}
+
+#[tauri::command]
 fn get_keys(state: State<InternalState>) -> kdbx_keys::Database {
     let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
-    println!("db_groups: {:#?}", db.groups);
+    // println!("db_groups: {:#?}", db.groups);
     db
 }
 
@@ -140,10 +161,6 @@ fn create_new_key(
     url: String,
 ) -> () {
     let mut database = state.database.lock().unwrap();
-
-    let database_path = state.database_path.lock().unwrap();
-    let database_password = state.database_password.lock().unwrap();
-
     let group = database.find_group_mut(|g| g.uuid().to_string() == current_group_uuid);
 
     let group = if group.is_none() {
@@ -160,7 +177,16 @@ fn create_new_key(
 
     group.add_entry(entry);
 
-    let mut kdbx = Kdbx::from_database(database.clone());
+    save_database(database.clone(), &state);
+
+    window.emit("refresh_ui", {}).unwrap();
+}
+
+fn save_database(database: kdbx_rs::database::Database, state: &State<InternalState>) {
+    let database_path = state.database_path.lock().unwrap();
+    let database_password = state.database_password.lock().unwrap();
+
+    let mut kdbx = Kdbx::from_database(database);
     kdbx.set_key(CompositeKey::from_password(&database_password.clone()))
         .unwrap();
     let file = File::create(database_path.clone());
@@ -170,8 +196,6 @@ fn create_new_key(
         }
         Err(e) => panic!("Error creating file: {}", e),
     };
-
-    window.emit("refresh_ui", {}).unwrap();
 }
 
 #[tauri::command]
@@ -214,7 +238,7 @@ fn create_database(
         .unwrap();
 
     let full_path = format!("{}/{}.{}", path, &name, "kdbx");
-    println!("full_path: {}", full_path);
+    // println!("full_path: {}", full_path);
 
     let mut database_path = state.database_path.lock().unwrap();
     *database_path = full_path.clone();
@@ -244,14 +268,28 @@ fn create_database(
 #[tauri::command(async)]
 fn shutdown(app: tauri::AppHandle) {
     //TODO: Save database before shutdown
-    thread::sleep(time::Duration::from_secs(5));
+    let database = app
+        .state::<InternalState>()
+        .database
+        .lock()
+        .unwrap()
+        .clone();
+    let state = app.state::<InternalState>();
+    save_database(database, &state);
     app.exit(0)
 }
 
 #[tauri::command(async)]
 fn lock(app: tauri::AppHandle) -> bool {
     //TODO: Save database before lock
-    thread::sleep(time::Duration::from_secs(5));
+    let database = app
+        .state::<InternalState>()
+        .database
+        .lock()
+        .unwrap()
+        .clone();
+    let state = app.state::<InternalState>();
+    save_database(database, &state);
     true
     // app.exit(0)
 }

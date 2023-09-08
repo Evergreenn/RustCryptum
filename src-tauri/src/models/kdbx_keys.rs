@@ -152,15 +152,15 @@ impl Group {
         // for group in ref_group.groups() {
         //     groups.push(Group::new(group));
         // }
-        println!("in groups");
-        println!("{:?}", ref_group);
+        // println!("in groups");
+        // println!("{:?}", ref_group);
         Self {
             uuid: ref_group.uuid(),
             name: ref_group.name().to_string(),
             entries: ref_group
                 .entries()
                 .map(|e| {
-                    println!("entries: {:?}", e);
+                    // println!("entries: {:?}", e);
                     Entry::new(e.clone())
                 })
                 .collect(),

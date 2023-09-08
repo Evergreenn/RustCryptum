@@ -27,6 +27,8 @@ ron = "0.8.0"
 anyhow = "1.0.71"
 tokio-stream = "0.1.14"
 kdbx-rs = "0.4.0"
+strum = "0.25.0"
+strum_macros = "0.25.2"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
