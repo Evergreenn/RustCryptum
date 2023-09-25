@@ -43,6 +43,7 @@ pub struct Field {
 #[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct Card {
     pub uuid: String,
+    pub password_score: Option<u8>,
     pub title: Option<String>,
     pub password: Option<String>,
     pub username: Option<String>,
@@ -92,6 +93,7 @@ impl Entry {
             },
             card: Card {
                 uuid: ref_entry.uuid().to_string(),
+                password_score: None,
                 title: ref_entry
                     .title()
                     .is_some()
@@ -128,6 +130,9 @@ impl Entry {
             },
             // parent_group_uuid: ref_entry.parent_group_uuid(),
         }
+    }
+    pub fn set_password_score(&mut self, score: u8) {
+        self.card.password_score = Some(score);
     }
 }
 

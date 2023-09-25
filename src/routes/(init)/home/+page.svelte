@@ -6,7 +6,7 @@
 
 	let statestore = useStateStore();
 	let database: any = [];
-	let currentTile: number = 0;
+	let currentTile: string = '';
 
 	$: {
 		currentTile = $statestore.currentTile;

@@ -6,14 +6,14 @@ use models::kdbx_keys;
 use passwords::PasswordGenerator;
 use std::fs::File;
 use std::sync::{Arc, Mutex};
-use std::{thread, time};
+// use std::{thread, time};
 
 // use crate::models::key::*;
 use tauri::{Manager, State, Window};
 
 pub mod config;
 pub mod models;
-mod repository;
+pub mod password;
 // pub mod utils;
 
 // #[derive(Serialize, Deserialize)]
@@ -106,9 +106,11 @@ fn get_keys(state: State<InternalState>) -> kdbx_keys::Database {
 fn get_one_key(state: State<InternalState>, id: String) -> kdbx_keys::Entry {
     // let db = kdbx_keys::Database::new(state.database.lock().unwrap().clone());
     // let entry = db.get_entry(id);
-    let mut database = state.database.lock().unwrap();
+    let database = state.database.lock().unwrap();
     let entry = database.find_entry(|e| e.uuid().to_string() == id).unwrap();
-    let entry = kdbx_keys::Entry::new(entry.clone());
+    let score = password::analyse_password(entry.password().unwrap());
+    let mut entry = kdbx_keys::Entry::new(entry.clone());
+    entry.set_password_score(score);
     entry
 }
 
