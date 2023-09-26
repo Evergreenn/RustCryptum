@@ -31,6 +31,10 @@
 	});
 
 	let editmod = true;
+
+	const handleEdit = () => {
+		editmod = !editmod;
+	};
 </script>
 
 <div class="flex flex-row justify-between">
@@ -44,7 +48,7 @@
 		<Card>
 			<span slot="title">{entry.card.title}</span>
 			<span slot="actions">
-				<Button onClick={() => (editmod = !editmod)}>
+				<Button onClick={handleEdit}>
 					<span slot="text">Edit</span>
 					<span slot="icon"><Edit /></span>
 				</Button>
@@ -60,12 +64,26 @@
 			<span slot="title">Password Score</span>
 			<span slot="actions" />
 			<span slot="body">
-				<div class="flex flex-row justify-center items-center">
+				<div class="flex flex-row justify-evenly items-center">
 					<ProgressRadial
+						stroke={30}
 						meter={entry.card.password_style}
-						track={entry.card.password_style}
-						value={entry.card.password_score}>{entry.card.password_score}%</ProgressRadial
+						track={'stroke-surface-500/30'}
+						value={entry.card.password_score}
 					>
+						{entry.card.password_score}
+					</ProgressRadial>
+
+					<ul>
+						<li>0 ~ 20 is very dangerous</li>
+						<li>20 ~ 40 is dangerous</li>
+						<li>40 ~ 60 is very weak</li>
+						<li>60 ~ 80 is weak</li>
+						<li>80 ~ 90 is good</li>
+						<li>90 ~ 95 is strong</li>
+						<li>95 ~ 99 is very strong</li>
+						<li>99 ~ 100 is invulnerable</li>
+					</ul>
 				</div>
 			</span>
 			<span slot="footer" />

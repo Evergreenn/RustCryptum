@@ -12,7 +12,7 @@
 				type="text"
 				class="input"
 				placeholder={field.key}
-				value={field.value}
+				bind:value={field.value}
 			/>
 		</label>
 	{/each}
